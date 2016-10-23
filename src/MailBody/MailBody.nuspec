@@ -6,11 +6,11 @@
     <title>$title$</title>
     <authors>doxakis</authors>
     <owners>doxakis</owners>
-    <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
+    <licenseUrl>https://github.com/doxakis/MailBody/blob/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <description>Easier transactional mail creation (.net)</description>
+    <releaseNotes>First release</releaseNotes>
     <copyright>Copyright 2016</copyright>
-    <tags>Tag1 Tag2</tags>
+    <tags>Transactional Email Mail</tags>
   </metadata>
 </package>
