@@ -11,19 +11,33 @@ namespace Example
     {
         public static void Main(string[] args)
         {
+            var footer = MailBody
+                .CreateBlock()
+                .Text("Follow ")
+                .Link("http://twitter.com/example", "@Example")
+                .Text(" on Twitter.");
+
+            var template = MailBodyTemplate.GetDefaultTemplate();
+            template.Paragraph = "<p style='color:blue;'>{0}</p>";
+
             var body = MailBody
-                .CreateBody()
-                .Paragraph("Hi there,")
-                .Paragraph("Sometimes you just want to send a simple HTML email with a simple design and clear call to action.This is it.")
-                .Button("https://google.ca", "Call To Action")
-                .Paragraph("This is a really simple email template. It's sole purpose is to get the recipient to click the button with no distractions.")
-                .Paragraph("Good luck! Hope it works.")
+                .CreateBody(template, footer)
+                .Paragraph("Please confirm your email address by clicking the link below.")
+                .Raw("<p>We may need to send you <strong>critical information</strong> about our service and it is important that we have an accurate email address.</p>")
+                .Button("https://www.example.com/", "Confirm Email Address")
+                .Paragraph("— [Insert company name here]")
                 .ToString();
-            Console.WriteLine(body);
-            Console.ReadKey();
+
+            //var body = MailBody
+            //    .CreateBody()
+            //    .Paragraph("Please confirm your email address by clicking the link below.")
+            //    .Paragraph("We may need to send you critical information about our service and it is important that we have an accurate email address.")
+            //    .Button("https://example.com/", "Confirm Email Address")
+            //    .Paragraph("— [Insert company name here]")
+            //    .ToString();
 
             // Save on disk (for testing)
-            //File.WriteAllText(@"C:\temp\index.html", body);
+            File.WriteAllText(@"C:\temp\index.html", body);
         }
     }
 }

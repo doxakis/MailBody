@@ -38,6 +38,7 @@ namespace MailBodyPack
         public string Paragraph { get; set; }
         public string Link { get; set; }
         public string Title { get; set; }
+        public string SubTitle { get; set; }
         public string Body { get; set; }
         public string Button { get; set; }
         public string Text { get; set; }
@@ -60,6 +61,7 @@ namespace MailBodyPack
                 Paragraph = "<p style='font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;'>{0}</p>",
                 Link = "<a href='{0}'>{1}</a>",
                 Title = "<h1>{0}</h1>",
+                SubTitle = "<h2>{0}</h2>",
                 Text = "{0}",
                 UnorderedList = "<ul>{0}</ul>",
                 OrderedList = "<ol>{0}</ol>",
@@ -85,7 +87,7 @@ namespace MailBodyPack
   <head>
     <meta name='viewport' content='width=device-width'>
     <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
-    <title>Simple Transactional Email</title>
+    <title></title>
     <style media='all' type='text/css'>
     @media all {{
       .btn-primary table td:hover {{
@@ -260,6 +262,11 @@ namespace MailBodyPack
             _body.Append(string.Format(_template.Title, HtmlEncode(content)));
             return this;
         }
+        public MailBlockFluent SubTitle(string content)
+        {
+            _body.Append(string.Format(_template.SubTitle, HtmlEncode(content)));
+            return this;
+        }
         public MailBlockFluent Paragraph(string content)
         {
             _body.Append(string.Format(_template.Paragraph, HtmlEncode(content)));
@@ -267,8 +274,12 @@ namespace MailBodyPack
         }
         public MailBlockFluent Paragraph(MailBlockFluent block)
         {
-            _body.Append(block.ToString());
+            _body.Append(string.Format(_template.Paragraph, block.ToString()));
             return this;
+        }
+        public MailBlockFluent Link(string link)
+        {
+            return Link(link, link);
         }
         public MailBlockFluent Link(string link, string text)
         {

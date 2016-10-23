@@ -1,17 +1,24 @@
 ﻿{
-  "version": "1.0.1-*",
+  "version": "1.0.2-*",
   "title": "MailBody",
   "description": "Easier transactional mail creation (.net)",
   "releaseNotes": "First release",
   "projectUrl": "https://github.com/doxakis/MailBody",
   "licenseUrl": "https://github.com/doxakis/MailBody/blob/master/LICENSE",
-  
+  "author": "doxakis",
+
   "dependencies": {
     "NETStandard.Library": "1.6.0"
   },
 
   "frameworks": {
+    "netstandard1.4": {
+      "imports": "dnxcore50"
+    },
     "netstandard1.6": {
+      "imports": "dnxcore50"
+    },
+    "net45": {
       "imports": "dnxcore50"
     }
   }
