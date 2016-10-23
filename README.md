@@ -1,4 +1,4 @@
-# MailBody
+# MailBody [![Build Status](https://travis-ci.org/doxakis/MailBody.svg?branch=master)](https://travis-ci.org/doxakis/MailBody)
 MailBody is a library for generating simple transaction mail.
 Mails are created by using a fluent interface.
 
