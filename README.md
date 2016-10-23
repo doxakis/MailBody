@@ -11,6 +11,10 @@ To get the latest version:
 Install-Package MailBody
 ```
 
+# Supported framework
+- dotnet core 1.0
+- .net framework 4.5
+
 # Quick Examples
 
 ## Simple
@@ -20,7 +24,7 @@ var body = MailBody
 	.Paragraph("Please confirm your email address by clicking the link below.")
 	.Paragraph("We may need to send you critical information about our service and it is important that we have an accurate email address.")
 	.Button("https://example.com/", "Confirm Email Address")
-	.Paragraph("— [Insert company name here]")
+	.Paragraph("â€” [Insert company name here]")
 	.ToString();
 ```
 
@@ -37,7 +41,7 @@ var body = MailBody
     .Paragraph("Please confirm your email address by clicking the link below.")
     .Paragraph("We may need to send you critical information about our service and it is important that we have an accurate email address.")
     .Button("https://www.example.com/", "Confirm Email Address")
-    .Paragraph("— [Insert company name here]")
+    .Paragraph("â€” [Insert company name here]")
     .ToString();
 ```
 
@@ -57,7 +61,7 @@ var body = MailBody
     .Paragraph("Please confirm your email address by clicking the link below.")
     .Raw("<p>We may need to send you <strong>critical information</strong> about our service and it is important that we have an accurate email address.</p>")
     .Button("https://www.example.com/", "Confirm Email Address")
-    .Paragraph("— [Insert company name here]")
+    .Paragraph("â€” [Insert company name here]")
     .ToString();
 ```
 
