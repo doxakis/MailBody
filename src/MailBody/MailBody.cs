@@ -348,12 +348,6 @@ namespace MailBodyPack
                     case '>':
                         builder.Append("&gt;");
                         break;
-                    case '\'':
-                        builder.Append("&apos;");
-                        break;
-                    case '"':
-                        builder.Append("&quot;");
-                        break;
                     default:
                         builder.Append(item);
                         break;
