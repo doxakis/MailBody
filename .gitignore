@@ -74,4 +74,6 @@ _[Ss]cripts
 *.ncrunchsolution
 *.dot[Cc]over
 .vs
-
+out
+project.lock.json
+project.fragment.lock.json

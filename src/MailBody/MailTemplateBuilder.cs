@@ -2,22 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MailBodyPack.Interfaces;
 
 namespace MailBodyPack
 {
     public class MailTemplateBuilder
     {
+        private Func<string> _styleFunc;
         private Func<string, string> _paragraphFunc;
         private Func<string, string, string> _linkFunc;
+        private Func<string, string> _titleFunc;
         private Func<string, string> _subTitleFunc;
+        private Func<string, string> _bodyFunc;
+        private Func<string, string, string> _buttonFunc;
         private Func<string, string> _textFunc;
         private Func<string, string> _strongTextFunc;
+        private Func<string> _lineBreakFunc;
         private Func<string, string> _unorderedListFunc;
         private Func<string, string> _orderedListFunc;
         private Func<string, string> _listItemFunc;
-        private Func<string> _lineBreakFunc;
-        private Func<string, string, string> _buttonFunc;
-        private Func<string> _styleFunc;
 
         private MailTemplateBuilder()
         {
@@ -42,6 +45,18 @@ namespace MailBodyPack
         public MailTemplateBuilder LinkStyle(Func<string, string, string> linkFunc)
         {
             _linkFunc = linkFunc;
+            return this;
+        }
+
+        public MailTemplateBuilder TitleStyle(Func<string, string> titleFunc)
+        {
+            _titleFunc = titleFunc;
+            return this;
+        }
+
+        public MailTemplateBuilder BodyStyle(Func<string, string> bodyFunc)
+        {
+            _bodyFunc = bodyFunc;
             return this;
         }
 
@@ -92,7 +107,15 @@ namespace MailBodyPack
             _buttonFunc = buttonFunc;
             return this;
         }
+
+        public ICustomizableMailTemplate Build()
+        {
+            return new CustomizableMailTemplate(
+                    _paragraphFunc, _linkFunc, _titleFunc, _subTitleFunc,
+                    _bodyFunc, _textFunc, _strongTextFunc, _unorderedListFunc,
+                    _orderedListFunc, _listItemFunc,_lineBreakFunc,
+                    _buttonFunc, _styleFunc
+                );
+        }
     }
-
-
 }

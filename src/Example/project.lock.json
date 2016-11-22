@@ -2028,7 +2028,7 @@
           "lib/netstandard1.3/_._": {}
         }
       },
-      "MailBody/1.0.4": {
+      "MailBody/1.0.5": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.6",
         "dependencies": {
@@ -6635,7 +6635,7 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "MailBody/1.0.4": {
+    "MailBody/1.0.5": {
       "type": "project",
       "path": "../MailBody/project.json",
       "msbuildProject": "../MailBody/MailBody.xproj"
@@ -6643,7 +6643,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "MailBody >= 1.0.0-*",
+      "MailBody",
       "Microsoft.NETCore.App >= 1.0.0"
     ],
     ".NETCoreApp,Version=v1.0": []

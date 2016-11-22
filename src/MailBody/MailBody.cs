@@ -305,7 +305,7 @@ namespace MailBodyPack
 
     public class MailBlockFluent
     {
-        private StringBuilder _body = new StringBuilder();
+        protected StringBuilder Body = new StringBuilder();
         private MailBodyTemplate _template;
         private MailBlockFluent _footer;
         
@@ -320,9 +320,9 @@ namespace MailBodyPack
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
-        public MailBlockFluent Title(string content)
+        public virtual MailBlockFluent Title(string content)
         {
-            _body.Append(string.Format(_template.Title, MailBody.HtmlEncode(content)));
+            Body.Append(string.Format(_template.Title, MailBody.HtmlEncode(content)));
             return this;
         }
 
@@ -331,9 +331,9 @@ namespace MailBodyPack
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
-        public MailBlockFluent SubTitle(string content)
+        public virtual MailBlockFluent SubTitle(string content)
         {
-            _body.Append(string.Format(_template.SubTitle, MailBody.HtmlEncode(content)));
+            Body.Append(string.Format(_template.SubTitle, MailBody.HtmlEncode(content)));
             return this;
         }
 
@@ -342,9 +342,9 @@ namespace MailBodyPack
         /// </summary>
         /// <param name="content"></param>
         /// <returns></returns>
-        public MailBlockFluent Paragraph(string content)
+        public virtual MailBlockFluent Paragraph(string content)
         {
-            _body.Append(string.Format(_template.Paragraph, MailBody.HtmlEncode(content)));
+            Body.Append(string.Format(_template.Paragraph, MailBody.HtmlEncode(content)));
             return this;
         }
 
@@ -353,9 +353,9 @@ namespace MailBodyPack
         /// </summary>
         /// <param name="block"></param>
         /// <returns></returns>
-        public MailBlockFluent Paragraph(MailBlockFluent block)
+        public virtual MailBlockFluent Paragraph(MailBlockFluent block)
         {
-            _body.Append(string.Format(_template.Paragraph, block.ToString()));
+            Body.Append(string.Format(_template.Paragraph, block.ToString()));
             return this;
         }
 
@@ -364,7 +364,7 @@ namespace MailBodyPack
         /// </summary>
         /// <param name="link"></param>
         /// <returns></returns>
-        public MailBlockFluent Link(string link)
+        public virtual MailBlockFluent Link(string link)
         {
             return Link(link, link);
         }
@@ -375,9 +375,9 @@ namespace MailBodyPack
         /// <param name="link"></param>
         /// <param name="text"></param>
         /// <returns></returns>
-        public MailBlockFluent Link(string link, string text)
+        public virtual MailBlockFluent Link(string link, string text)
         {
-            _body.Append(string.Format(_template.Link, MailBody.HtmlEncode(link), MailBody.HtmlEncode(text)));
+            Body.Append(string.Format(_template.Link, MailBody.HtmlEncode(link), MailBody.HtmlEncode(text)));
             return this;
         }
 
@@ -387,9 +387,9 @@ namespace MailBodyPack
         /// <param name="link"></param>
         /// <param name="text"></param>
         /// <returns></returns>
-        public MailBlockFluent Button(string link, string text)
+        public virtual MailBlockFluent Button(string link, string text)
         {
-            _body.Append(string.Format(_template.Button, MailBody.HtmlEncode(link), MailBody.HtmlEncode(text)));
+            Body.Append(string.Format(_template.Button, MailBody.HtmlEncode(link), MailBody.HtmlEncode(text)));
             return this;
         }
 
@@ -398,9 +398,9 @@ namespace MailBodyPack
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public MailBlockFluent Text(string text)
+        public virtual MailBlockFluent Text(string text)
         {
-            _body.Append(string.Format(_template.Text, MailBody.HtmlEncode(text)));
+            Body.Append(string.Format(_template.Text, MailBody.HtmlEncode(text)));
             return this;
         }
         
@@ -409,9 +409,9 @@ namespace MailBodyPack
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public MailBlockFluent StrongText(string text)
+        public virtual MailBlockFluent StrongText(string text)
         {
-            _body.Append(string.Format(_template.StrongText, MailBody.HtmlEncode(text)));
+            Body.Append(string.Format(_template.StrongText, MailBody.HtmlEncode(text)));
             return this;
         }
 
@@ -420,9 +420,9 @@ namespace MailBodyPack
         /// </summary>
         /// <param name="html"></param>
         /// <returns></returns>
-        public MailBlockFluent Raw(string html)
+        public virtual MailBlockFluent Raw(string html)
         {
-            _body.Append(html);
+            Body.Append(html);
             return this;
         }
 
@@ -430,9 +430,9 @@ namespace MailBodyPack
         /// Add a new break line.
         /// </summary>
         /// <returns></returns>
-        public MailBlockFluent LineBreak()
+        public virtual MailBlockFluent LineBreak()
         {
-            _body.Append(_template.LineBreak);
+            Body.Append(_template.LineBreak);
             return this;
         }
 
@@ -441,14 +441,14 @@ namespace MailBodyPack
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        public MailBlockFluent UnorderedList(IEnumerable<MailBlockFluent> items)
+        public virtual MailBlockFluent UnorderedList(IEnumerable<MailBlockFluent> items)
         {
             var builder = new StringBuilder();
             foreach (var item in items)
             {
                 builder.Append(string.Format(_template.ListItem, MailBody.HtmlEncode(item.ToString())));
             }
-            _body.Append(string.Format(_template.UnorderedList, builder.ToString()));
+            Body.Append(string.Format(_template.UnorderedList, builder.ToString()));
             return this;
         }
 
@@ -457,14 +457,14 @@ namespace MailBodyPack
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        public MailBlockFluent OrderedList(IEnumerable<MailBlockFluent> items)
+        public virtual MailBlockFluent OrderedList(IEnumerable<MailBlockFluent> items)
         {
             var builder = new StringBuilder();
             foreach (var item in items)
             {
                 builder.Append(string.Format(_template.ListItem, MailBody.HtmlEncode(item.ToString())));
             }
-            _body.Append(string.Format(_template.OrderedList, builder.ToString()));
+            Body.Append(string.Format(_template.OrderedList, builder.ToString()));
             return this;
         }
 
@@ -474,7 +474,7 @@ namespace MailBodyPack
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format(_template.Body, _body.ToString(),
+            return string.Format(_template.Body, Body.ToString(),
                 _footer != null ? _footer.ToString() : string.Empty);
         }
     }
