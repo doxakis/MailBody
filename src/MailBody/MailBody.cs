@@ -8,28 +8,76 @@ namespace MailBodyPack
 {
     public class MailBody
     {
+        /// <summary>
+        /// Starting point for creating a body.
+        /// </summary>
+        /// <returns></returns>
         public static MailBlockFluent CreateBody()
         {
             var template = MailBodyTemplate.GetDefaultTemplate();
             var instance = new MailBlockFluent(template, null);
             return instance;
         }
+
+        /// <summary>
+        /// Starting point for creating a body with a footer.
+        /// </summary>
+        /// <param name="footer"></param>
+        /// <returns></returns>
         public static MailBlockFluent CreateBody(MailBlockFluent footer)
         {
             var template = MailBodyTemplate.GetDefaultTemplate();
             var instance = new MailBlockFluent(template, footer);
             return instance;
         }
+
+        /// <summary>
+        /// Starting point for creating a body with a custom template and a footer.
+        /// </summary>
+        /// <param name="template"></param>
+        /// <param name="footer"></param>
+        /// <returns></returns>
         public static MailBlockFluent CreateBody(MailBodyTemplate template, MailBlockFluent footer)
         {
             var instance = new MailBlockFluent(template, footer);
             return instance;
         }
+
+        /// <summary>
+        /// Starting point for creating a block of html.
+        /// </summary>
+        /// <returns></returns>
         public static MailBlockFluent CreateBlock()
         {
             var template = MailBodyTemplate.BlockTemplate();
             var instance = CreateBody(template, null);
             return instance;
+        }
+
+        /// <summary>
+        /// Escape greater-than sign and less-than sign characters.
+        /// </summary>
+        /// <param name="unescapeText"></param>
+        /// <returns></returns>
+        public static string HtmlEncode(string unescapeText)
+        {
+            var builder = new StringBuilder();
+            foreach (var item in unescapeText)
+            {
+                switch (item)
+                {
+                    case '<':
+                        builder.Append("&lt;");
+                        break;
+                    case '>':
+                        builder.Append("&gt;");
+                        break;
+                    default:
+                        builder.Append(item);
+                        break;
+                }
+            }
+            return builder.ToString();
         }
     }
     
@@ -42,11 +90,16 @@ namespace MailBodyPack
         public string Body { get; set; }
         public string Button { get; set; }
         public string Text { get; set; }
+        public string StrongText { get; set; }
         public string LineBreak { get; set; }
         public string UnorderedList { get; set; }
         public string OrderedList { get; set; }
         public string ListItem { get; set; }
 
+        /// <summary>
+        /// Get the default template for block of html.
+        /// </summary>
+        /// <returns></returns>
         public static MailBodyTemplate BlockTemplate()
         {
             var template = GetDefaultTemplate();
@@ -54,6 +107,10 @@ namespace MailBodyPack
             return template;
         }
 
+        /// <summary>
+        /// Get the default template for body.
+        /// </summary>
+        /// <returns></returns>
         public static MailBodyTemplate GetDefaultTemplate()
         {
             return new MailBodyTemplate
@@ -63,6 +120,7 @@ namespace MailBodyPack
                 Title = "<h1>{0}</h1>",
                 SubTitle = "<h2>{0}</h2>",
                 Text = "{0}",
+                StrongText = "<strong>{0}</strong>",
                 UnorderedList = "<ul>{0}</ul>",
                 OrderedList = "<ol>{0}</ol>",
                 ListItem = "<li>{0}</li>",
@@ -257,103 +315,167 @@ namespace MailBodyPack
             _footer = footer;
         }
 
+        /// <summary>
+        /// Add a new title.
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
         public MailBlockFluent Title(string content)
         {
-            _body.Append(string.Format(_template.Title, HtmlEncode(content)));
+            _body.Append(string.Format(_template.Title, MailBody.HtmlEncode(content)));
             return this;
         }
+
+        /// <summary>
+        /// Add a new subtitle.
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
         public MailBlockFluent SubTitle(string content)
         {
-            _body.Append(string.Format(_template.SubTitle, HtmlEncode(content)));
+            _body.Append(string.Format(_template.SubTitle, MailBody.HtmlEncode(content)));
             return this;
         }
+
+        /// <summary>
+        /// Add a new paragraph.
+        /// </summary>
+        /// <param name="content"></param>
+        /// <returns></returns>
         public MailBlockFluent Paragraph(string content)
         {
-            _body.Append(string.Format(_template.Paragraph, HtmlEncode(content)));
+            _body.Append(string.Format(_template.Paragraph, MailBody.HtmlEncode(content)));
             return this;
         }
+
+        /// <summary>
+        /// Add a new paragraph
+        /// </summary>
+        /// <param name="block"></param>
+        /// <returns></returns>
         public MailBlockFluent Paragraph(MailBlockFluent block)
         {
             _body.Append(string.Format(_template.Paragraph, block.ToString()));
             return this;
         }
+
+        /// <summary>
+        /// Add a new link
+        /// </summary>
+        /// <param name="link"></param>
+        /// <returns></returns>
         public MailBlockFluent Link(string link)
         {
             return Link(link, link);
         }
+
+        /// <summary>
+        /// Add a new link.
+        /// </summary>
+        /// <param name="link"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public MailBlockFluent Link(string link, string text)
         {
-            _body.Append(string.Format(_template.Link, HtmlEncode(link), HtmlEncode(text)));
+            _body.Append(string.Format(_template.Link, MailBody.HtmlEncode(link), MailBody.HtmlEncode(text)));
             return this;
         }
+
+        /// <summary>
+        /// Add a button with a link.
+        /// </summary>
+        /// <param name="link"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public MailBlockFluent Button(string link, string text)
         {
-            _body.Append(string.Format(_template.Button, HtmlEncode(link), HtmlEncode(text)));
+            _body.Append(string.Format(_template.Button, MailBody.HtmlEncode(link), MailBody.HtmlEncode(text)));
             return this;
         }
+
+        /// <summary>
+        /// Add plain text.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public MailBlockFluent Text(string text)
         {
-            _body.Append(string.Format(_template.Text, HtmlEncode(text)));
+            _body.Append(string.Format(_template.Text, MailBody.HtmlEncode(text)));
             return this;
         }
+        
+        /// <summary>
+        /// Add a strong text.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public MailBlockFluent StrongText(string text)
+        {
+            _body.Append(string.Format(_template.StrongText, MailBody.HtmlEncode(text)));
+            return this;
+        }
+
+        /// <summary>
+        /// Add raw html. This allows you to add custom html.
+        /// </summary>
+        /// <param name="html"></param>
+        /// <returns></returns>
         public MailBlockFluent Raw(string html)
         {
             _body.Append(html);
             return this;
         }
+
+        /// <summary>
+        /// Add a new break line.
+        /// </summary>
+        /// <returns></returns>
         public MailBlockFluent LineBreak()
         {
             _body.Append(_template.LineBreak);
             return this;
         }
 
+        /// <summary>
+        /// Add a unordered list.
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
         public MailBlockFluent UnorderedList(IEnumerable<MailBlockFluent> items)
         {
             var builder = new StringBuilder();
             foreach (var item in items)
             {
-                builder.Append(string.Format(_template.ListItem, HtmlEncode(item.ToString())));
+                builder.Append(string.Format(_template.ListItem, MailBody.HtmlEncode(item.ToString())));
             }
             _body.Append(string.Format(_template.UnorderedList, builder.ToString()));
             return this;
         }
 
+        /// <summary>
+        /// Add a ordered list.
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
         public MailBlockFluent OrderedList(IEnumerable<MailBlockFluent> items)
         {
             var builder = new StringBuilder();
             foreach (var item in items)
             {
-                builder.Append(string.Format(_template.ListItem, HtmlEncode(item.ToString())));
+                builder.Append(string.Format(_template.ListItem, MailBody.HtmlEncode(item.ToString())));
             }
             _body.Append(string.Format(_template.OrderedList, builder.ToString()));
             return this;
         }
 
+        /// <summary>
+        /// Generate the body.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return string.Format(_template.Body, _body.ToString(),
                 _footer != null ? _footer.ToString() : string.Empty);
-        }
-
-        private static string HtmlEncode(string unescapeText)
-        {
-            var builder = new StringBuilder();
-            foreach (var item in unescapeText)
-            {
-                switch (item)
-                {
-                    case '<':
-                        builder.Append("&lt;");
-                        break;
-                    case '>':
-                        builder.Append("&gt;");
-                        break;
-                    default:
-                        builder.Append(item);
-                        break;
-                }
-            }
-            return builder.ToString();
         }
     }
 }

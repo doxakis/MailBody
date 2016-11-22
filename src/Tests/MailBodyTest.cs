@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 using MailBodyPack;
+using System.IO;
 
 namespace Tests
 {
@@ -64,6 +65,12 @@ namespace Tests
                 .ToString();
 
             Assert.NotEmpty(body);
+        }
+
+        [Fact]
+        public void RunExampleProject()
+        {
+            Example.Program.Main(new string[0]);
         }
     }
 }
