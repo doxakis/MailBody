@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.0.4-*",
+  "version": "1.0.5-*",
   "packOptions": {
     "summary": "Create transactional email with a fluent interface (.net)",
     "tags": [ "transactional", "email" ],
