@@ -1,0 +1,33 @@
+﻿{
+  "version": "1.0.5-*",
+  "packOptions": {
+    "summary": "Create transactional email with a fluent interface (.net)",
+    "tags": [ "transactional", "email" ],
+    "owners": [ "doxakis" ],
+    "projectUrl": "https://github.com/doxakis/MailBody",
+    "licenseUrl": "https://github.com/doxakis/MailBody/blob/master/LICENSE",
+    "requireLicenseAcceptance": false,
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/doxakis/MailBody"
+    }
+  },
+  "title": "MailBody",
+  "description": "Easier transactional mail creation (.net)",
+
+  "dependencies": {
+    "NETStandard.Library": "1.6.0"
+  },
+
+  "frameworks": {
+    "netstandard1.4": {
+      "imports": "dnxcore50"
+    },
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    },
+    "net45": {
+      "imports": "dnxcore50"
+    }
+  }
+}
