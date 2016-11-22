@@ -27,6 +27,8 @@ var body = MailBody
     .ToString();
 ```
 
+[Preview](https://cdn.rawgit.com/doxakis/MailBody/master/src/Example/Output/EmailAddressConfirmation.html)
+
 ## Password reset
 ```
 var appName = "My app";
@@ -40,6 +42,8 @@ var body = MailBody
     .Paragraph("— [Insert company name here]")
     .ToString();
 ```
+
+[Preview](https://cdn.rawgit.com/doxakis/MailBody/master/src/Example/Output/PasswordReset.html)
 
 ## Order confirmation
 ```
@@ -59,6 +63,8 @@ var body = MailBody
     .Paragraph("— [Insert company name here]")
     .ToString();
 ```
+
+[Preview](https://cdn.rawgit.com/doxakis/MailBody/master/src/Example/Output/OrderConfirmation.html)
 
 ## Notification
 ```
@@ -86,7 +92,9 @@ var body = MailBody
     .ToString();
 ```
 
-## Withfooter
+[Preview](https://cdn.rawgit.com/doxakis/MailBody/master/src/Example/Output/Notification.html)
+
+## With footer
 ```
 var footer = MailBody
     .CreateBlock()
@@ -102,6 +110,8 @@ var body = MailBody
     .Paragraph("— [Insert company name here]")
     .ToString();
 ```
+
+[Preview](https://cdn.rawgit.com/doxakis/MailBody/master/src/Example/Output/Withfooter.html)
 
 ## Custom theme & Raw html
 ```
@@ -122,6 +132,8 @@ var body = MailBody
     .Paragraph("— [Insert company name here]")
     .ToString();
 ```
+
+[Preview](https://cdn.rawgit.com/doxakis/MailBody/master/src/Example/Output/CustomThemeAndRawHtml.html)
 
 # Copyright and license
 Code released under the MIT license.
