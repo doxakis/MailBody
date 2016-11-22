@@ -2485,7 +2485,7 @@
         "framework": ".NETCoreApp,Version=v1.0",
         "dependencies": {
           "MailBody": "1.0.0",
-          "Microsoft.NETCore.App": "1.0.1"
+          "Microsoft.NETCore.App": "1.0.0"
         },
         "compile": {
           "netcoreapp1.0/Example.dll": {}
