@@ -4,7 +4,7 @@ using MailBodyPack.Interfaces;
 
 namespace MailBodyPack
 {
-    class CustomMailBlock : MailBlockFluent
+    public class CustomMailBlock : MailBlockFluent
     {
         private static ICustomizableMailTemplate _mailTemplate;
 

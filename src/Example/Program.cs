@@ -18,8 +18,10 @@ namespace Example
             File.WriteAllText(@"Output/Notification.html", GenerateNotification());
             File.WriteAllText(@"Output/Withfooter.html", GenerateWithfooter());
             File.WriteAllText(@"Output/CustomThemeAndRawHtml.html", GenerateCustomThemeAndRawHtml());
-        }
+            File.WriteAllText(@"Output/GenerateCustomTemplate.html", GenerateCustomTemplate());
 
+        }
+        
         public static string GenerateEmailAddressConfirmation()
         {
             var body = MailBody
@@ -134,6 +136,22 @@ namespace Example
                 .Button("https://www.example.com/", "Reset password")
                 .Paragraph("Thanks for using " + appName + "!")
                 .Paragraph("— [Insert company name here]")
+                .ToString();
+
+            return body;
+        }
+
+        public static string GenerateCustomTemplate()
+        {
+            var template = MailTemplateBuilder
+                .CreatTemplate()
+                .TitleStyle(t => $"<h1>{t}</h1")
+                .BodyStyle(b => $"<html><body>{b}</body></html>")
+                .Build();
+
+            var body = MailBody
+                .CreateBody(template)
+                .Title("Hello")
                 .ToString();
 
             return body;

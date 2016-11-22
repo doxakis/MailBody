@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MailBodyPack.Interfaces;
 
 namespace MailBodyPack
 {
@@ -41,6 +42,15 @@ namespace MailBodyPack
         {
             var instance = new MailBlockFluent(template, footer);
             return instance;
+        }
+        /// <summary>
+        /// Create a custom template.
+        /// </summary>
+        /// <param name="template"></param>
+        /// <returns></returns>
+        public static CustomMailBlock CreateBody(ICustomizableMailTemplate template)
+        {
+            return CustomMailBlock.CreateBlock(template);
         }
 
         /// <summary>
