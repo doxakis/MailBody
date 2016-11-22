@@ -53,6 +53,7 @@ namespace MailBodyPack
             return CustomMailBlock.CreateBlock(template);
         }
 
+
         /// <summary>
         /// Starting point for creating a block of html.
         /// </summary>

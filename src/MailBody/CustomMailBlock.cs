@@ -20,54 +20,56 @@ namespace MailBodyPack
 
         public override MailBlockFluent Title(string content)
         {
-            Body.Append(MailBody.HtmlEncode(_mailTemplate.GetTitle(content)));
+            Body.Append(_mailTemplate.GetTitle(content));
             return this;
         }
 
         public override MailBlockFluent SubTitle(string content)
         {
-            Body.Append(MailBody.HtmlEncode(_mailTemplate.GetSubTitle(content)));
+            Body.Append(_mailTemplate.GetSubTitle(content));
             return this;
         }
 
         public override MailBlockFluent Paragraph(string content)
         {
-            Body.Append(MailBody.HtmlEncode(_mailTemplate.GetParagraph(content)));
+            Body.Append(_mailTemplate.GetParagraph(content));
             return this;
         }
 
         public override MailBlockFluent Paragraph(MailBlockFluent block)
         {
-            return base.Paragraph(block);
+            if (block is CustomMailBlock)
+                Body.Append(_mailTemplate.GetParagraph(block.ToString()));
+            return this;
         }
 
         public override MailBlockFluent Link(string link)
         {
-            Body.Append(MailBody.HtmlEncode(_mailTemplate.GetLink(link, link)));
+            Body.Append(_mailTemplate.GetLink(link, link));
             return this;
         }
 
         public override MailBlockFluent Link(string link, string text)
         {
-            Body.Append(MailBody.HtmlEncode(_mailTemplate.GetLink(link, text)));
+            Body.Append(_mailTemplate.GetLink(link, text));
             return this;
         }
 
         public override MailBlockFluent Button(string link, string text)
         {
-            Body.Append(MailBody.HtmlEncode(_mailTemplate.GetButton(link, text)));
+            Body.Append(_mailTemplate.GetButton(link, text));
             return this;
         }
 
         public override MailBlockFluent Text(string text)
         {
-            Body.Append(MailBody.HtmlEncode(_mailTemplate.GetText(text)));
+            Body.Append(_mailTemplate.GetText(text));
             return this;
         }
 
         public override MailBlockFluent StrongText(string text)
         {
-            Body.Append(MailBody.HtmlEncode(_mailTemplate.GetStrongText(text)));
+            Body.Append(_mailTemplate.GetStrongText(text));
             return this;
         }
 
@@ -87,7 +89,7 @@ namespace MailBodyPack
             var builder = new StringBuilder();
             foreach (var item in items)
             {
-                builder.Append(MailBody.HtmlEncode(_mailTemplate.GetListItem(item.ToString())));
+                builder.Append(_mailTemplate.GetListItem(item.ToString()));
             }
             Body.Append(_mailTemplate.GetUnorderedList(builder.ToString()));
             return this;
@@ -98,7 +100,7 @@ namespace MailBodyPack
             var builder = new StringBuilder();
             foreach (var item in items)
             {
-                builder.Append(MailBody.HtmlEncode(_mailTemplate.GetListItem(item.ToString())));
+                builder.Append(_mailTemplate.GetListItem(item.ToString()));
             }
             Body.Append(_mailTemplate.GetOrderedList(builder.ToString()));
             return this;

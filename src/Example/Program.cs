@@ -145,13 +145,30 @@ namespace Example
         {
             var template = MailTemplateBuilder
                 .CreatTemplate()
-                .TitleStyle(t => $"<h1>{t}</h1")
-                .BodyStyle(b => $"<html><body>{b}</body></html>")
+                .DocumentStyle(null)
+                .ParagraphStyle(p => $"<p>{p}</p>")
+                .LinkStyle(null)
+                .TitleStyle(t => $"<h1>{t}</h1>")
+                .SubTitleStyle(null)
+                .BodyStyle(b => $"<html> <body>{b}</body> </html>")
+                .TextStyle(null)
+                .StrongTextStyle(null)
+                .UnorderedListStyle(null)
+                .OrderedListStyle(null)
+                .ListItemStyle(null)
+                .LineBreakStyle(null)
+                .ButtonStyle(null)
                 .Build();
+
+            var paragraph = MailBody
+                .CreateBody(template)
+                .Title("OMAR")
+                .Paragraph("Aloraini");
 
             var body = MailBody
                 .CreateBody(template)
                 .Title("Hello")
+                .Paragraph(paragraph)
                 .ToString();
 
             return body;

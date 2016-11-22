@@ -6,7 +6,77 @@ using MailBodyPack.Interfaces;
 
 namespace MailBodyPack
 {
-    public class MailTemplateBuilder
+    public interface IStyle
+    {
+        IParagraph DocumentStyle(Func<string> styleFunc);
+    }
+
+    public interface IParagraph
+    {
+        ILink ParagraphStyle(Func<string, string> paragraphFunc);
+    }
+
+    public interface ILink
+    {
+        ITitle LinkStyle(Func<string, string, string> linkFunc);
+    }
+
+    public interface ITitle
+    {
+        ISubTitle TitleStyle(Func<string, string> titleFunc);
+    }
+
+    public interface ISubTitle
+    {
+        IBody SubTitleStyle(Func<string, string> subTitleFunc);
+    }
+
+    public interface IBody
+    {
+        IText BodyStyle(Func<string, string> bodyFunc);
+    }
+
+    public interface IText
+    {
+        IStrongText TextStyle(Func<string, string> textFunc);
+    }
+
+    public interface IStrongText
+    {
+        IUnorderedList StrongTextStyle(Func<string, string> strongTextFunc);
+    }
+
+    public interface IUnorderedList
+    {
+        IOrderedList UnorderedListStyle(Func<string, string> unorderedListFunc);
+    }
+
+    public interface IOrderedList
+    {
+        IListItem OrderedListStyle(Func<string, string> orderedListFunc);
+    }
+
+    public interface IListItem
+    {
+        ILineBreak ListItemStyle(Func<string, string> listItemFunc);
+    }
+
+    public interface ILineBreak
+    {
+        IButton LineBreakStyle(Func<string> lineBreakFunc);
+    }
+
+    public interface IButton
+    {
+        IBuild ButtonStyle(Func<string, string, string> buttonFunc);
+    }
+
+    public interface IBuild
+    {
+        ICustomizableMailTemplate Build();
+    }
+
+    public class MailTemplateBuilder : IStyle, IParagraph, ILink, ITitle, ISubTitle, IBody, IText, IStrongText, IUnorderedList, IOrderedList, IListItem, ILineBreak, IButton, IBuild
     {
         private Func<string> _styleFunc;
         private Func<string, string> _paragraphFunc;
@@ -24,85 +94,84 @@ namespace MailBodyPack
 
         private MailTemplateBuilder()
         {
-
         }
 
-        public static MailTemplateBuilder CreatTemplate() =>
+        public static IStyle CreatTemplate() =>
             new MailTemplateBuilder();
 
-        public MailTemplateBuilder DocumentStyle(Func<string> styleFunc)
+        public IParagraph DocumentStyle(Func<string> styleFunc)
         {
             _styleFunc = styleFunc;
             return this;
         }
 
-        public MailTemplateBuilder ParagraphStyle(Func<string, string> paragraphFunc)
+        public ILink ParagraphStyle(Func<string, string> paragraphFunc)
         {
             _paragraphFunc = paragraphFunc;
             return this;
         }
 
-        public MailTemplateBuilder LinkStyle(Func<string, string, string> linkFunc)
+        public ITitle LinkStyle(Func<string, string, string> linkFunc)
         {
             _linkFunc = linkFunc;
             return this;
         }
 
-        public MailTemplateBuilder TitleStyle(Func<string, string> titleFunc)
+        public ISubTitle TitleStyle(Func<string, string> titleFunc)
         {
             _titleFunc = titleFunc;
             return this;
         }
 
-        public MailTemplateBuilder BodyStyle(Func<string, string> bodyFunc)
-        {
-            _bodyFunc = bodyFunc;
-            return this;
-        }
-
-        public MailTemplateBuilder SubTitleStyle(Func<string, string> subTitleFunc)
+        public IBody SubTitleStyle(Func<string, string> subTitleFunc)
         {
             _subTitleFunc = subTitleFunc;
             return this;
         }
 
-        public MailTemplateBuilder TextStyle(Func<string, string> textFunc)
+        public IText BodyStyle(Func<string, string> bodyFunc)
+        {
+            _bodyFunc = bodyFunc;
+            return this;
+        }
+
+        public IStrongText TextStyle(Func<string, string> textFunc)
         {
             _textFunc = textFunc;
             return this;
         }
 
-        public MailTemplateBuilder StrongTextStyle(Func<string, string> strongTextFunc)
+        public IUnorderedList StrongTextStyle(Func<string, string> strongTextFunc)
         {
             _strongTextFunc = strongTextFunc;
             return this;
         }
 
-        public MailTemplateBuilder UnorderedListStyle(Func<string, string> unorderedListFunc)
+        public IOrderedList UnorderedListStyle(Func<string, string> unorderedListFunc)
         {
             _unorderedListFunc = unorderedListFunc;
             return this;
         }
 
-        public MailTemplateBuilder OrderedListStyle(Func<string, string> orderedListFunc)
+        public IListItem OrderedListStyle(Func<string, string> orderedListFunc)
         {
             _orderedListFunc = orderedListFunc;
             return this;
         }
 
-        public MailTemplateBuilder ListItemStyle(Func<string, string> listItemFunc)
+        public ILineBreak ListItemStyle(Func<string, string> listItemFunc)
         {
             _listItemFunc = listItemFunc;
             return this;
         }
 
-        public MailTemplateBuilder LineBreakStyle(Func<string> lineBreakFunc)
+        public IButton LineBreakStyle(Func<string> lineBreakFunc)
         {
             _lineBreakFunc = lineBreakFunc;
             return this;
         }
 
-        public MailTemplateBuilder ButtonStyle(Func<string, string, string> buttonFunc)
+        public IBuild ButtonStyle(Func<string, string, string> buttonFunc)
         {
             _buttonFunc = buttonFunc;
             return this;
