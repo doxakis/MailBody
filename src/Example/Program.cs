@@ -18,6 +18,7 @@ namespace Example
             File.WriteAllText(@"Output/Notification.html", GenerateNotification());
             File.WriteAllText(@"Output/Withfooter.html", GenerateWithfooter());
             File.WriteAllText(@"Output/CustomThemeAndRawHtml.html", GenerateCustomThemeAndRawHtml());
+            File.WriteAllText(@"Output/AnotherWay.html", GenerateAnotherWay());
         }
 
         public static string GenerateEmailAddressConfirmation()
@@ -137,6 +138,26 @@ namespace Example
                 .ToString();
 
             return body;
+        }
+
+        public static string GenerateAnotherWay()
+        {
+            var body = MailBody.CreateBody();
+
+            body.Paragraph("Hi,")
+                .Paragraph("First paragraph..");
+
+            // Your code
+            body.Button("https://www.example.com/", "First button");
+            body.Paragraph("Another paragraph..");
+
+            // Your code
+            body.Button("https://www.example.com/", "Second button")
+                .Paragraph("— [Insert company name here]");
+
+            var htmlBody = body.ToString();
+
+            return htmlBody;
         }
     }
 }

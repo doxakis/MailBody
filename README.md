@@ -135,5 +135,27 @@ var body = MailBody
 
 [Preview](https://cdn.rawgit.com/doxakis/MailBody/master/src/Example/Output/CustomThemeAndRawHtml.html)
 
+## Another way to create your email
+```
+var body = MailBody.CreateBody();
+
+body.Paragraph("Hi,")
+    .Paragraph("First paragraph..");
+
+// Your code
+
+body.Button("https://www.example.com/", "First button");
+body.Paragraph("Another paragraph..");
+
+// Your code
+
+body.Button("https://www.example.com/", "Second button")
+    .Paragraph("— [Insert company name here]");
+
+var htmlBody = body.ToString();
+```
+
+[Preview](https://cdn.rawgit.com/doxakis/MailBody/master/src/Example/Output/AnotherWay.html)
+
 # Copyright and license
 Code released under the MIT license.
