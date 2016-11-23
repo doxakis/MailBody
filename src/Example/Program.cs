@@ -16,8 +16,9 @@ namespace Example
             File.WriteAllText(@"Output/PasswordReset.html", GeneratePasswordReset());
             File.WriteAllText(@"Output/OrderConfirmation.html", GenerateOrderConfirmation());
             File.WriteAllText(@"Output/Notification.html", GenerateNotification());
+            File.WriteAllText(@"Output/Blocks.html", GenerateBlocks());
             File.WriteAllText(@"Output/Withfooter.html", GenerateWithfooter());
-            File.WriteAllText(@"Output/CustomThemeAndRawHtml.html", GenerateCustomThemeAndRawHtml());
+            File.WriteAllText(@"Output/CustomThemeAndRawHtml.html", GenerateCustomThemeAndRawHtml()); 
         }
 
         public static string GenerateEmailAddressConfirmation()
@@ -117,6 +118,26 @@ namespace Example
                 .Paragraph(MailBody.CreateBlock()
                     .StrongText("Components:"))
                 .UnorderedList(items)
+                .Paragraph("— [Insert company name here]")
+                .ToString();
+
+            return body;
+        }
+		
+		public static string GenerateBlocks()
+        {
+            var componentsArray = new string[] { "Block A", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis nisl ut tellus egestas facilisis. Nulla eget erat dictum, facilisis libero sit amet, sollicitudin tortor. Morbi iaculis, urna eu tincidunt dapibus, sapien ex dictum nibh, non congue urna tellus vitae risus." };
+            var buttonsArray = new Tuple<string,string>[] { Tuple.Create<string,string>("http://www.google.com", "Button A"), Tuple.Create<string, string>("http://www.disney.com", "Button B") };
+            
+            var items = componentsArray.Select(item => MailBody.CreateBlock().Paragraph(item));
+            var buttons = buttonsArray.Select(item => MailBody.CreateBlock().Button(item.Item1, item.Item2));
+            
+            var body = MailBody
+                .CreateBody()
+                .Paragraph("Hello,")
+                .SubTitle("Here is the blocks:")
+                .AddBlocksList(items)
+                .AddBlocksList(buttons)
                 .Paragraph("— [Insert company name here]")
                 .ToString();
 
