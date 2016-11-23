@@ -18,8 +18,10 @@ namespace Example
             File.WriteAllText(@"Output/Notification.html", GenerateNotification());
             File.WriteAllText(@"Output/Withfooter.html", GenerateWithfooter());
             File.WriteAllText(@"Output/CustomThemeAndRawHtml.html", GenerateCustomThemeAndRawHtml());
-        }
+            File.WriteAllText(@"Output/GenerateCustomTemplate.html", GenerateCustomTemplate());
 
+        }
+        
         public static string GenerateEmailAddressConfirmation()
         {
             var body = MailBody
@@ -135,6 +137,39 @@ namespace Example
                 .Paragraph("Thanks for using " + appName + "!")
                 .Paragraph("— [Insert company name here]")
                 .ToString();
+
+            return body;
+        }
+
+        public static string GenerateCustomTemplate()
+        {
+            var template = MailTemplateBuilder
+                .CreatTemplate()
+                .Head(null)
+                .Body(b => $"{b}")
+                .ParagraphStyle(p => $"<p>{p}</p>")
+                .LinkStyle(null)
+                .TitleStyle(t => $"<h1>{t}</h1>")
+                .SubTitleStyle(null)
+                .TextStyle(null)
+                .StrongTextStyle(s => $"<h2>{s}</h2>")
+                .UnorderedListStyle(null)
+                .OrderedListStyle(null)
+                .ListItemStyle(null)
+                .LineBreakStyle(null)
+                .ButtonStyle(null)
+                .Build();
+
+
+            var body = MailBody
+                .CreateBody(template)
+                .Title("Hello")
+                .Block(t => MailBody
+                    .CreateBlock(t)
+                    .StrongText("Inside a block")
+                    .Paragraph("hmmm")
+                    .ToBlock())
+                .ToBody();
 
             return body;
         }

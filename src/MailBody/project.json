@@ -14,7 +14,7 @@
   },
   "title": "MailBody",
   "description": "Easier transactional mail creation (.net)",
-  
+
   "dependencies": {
     "NETStandard.Library": "1.6.0"
   },
