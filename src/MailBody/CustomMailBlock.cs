@@ -6,70 +6,72 @@ namespace MailBodyPack
 {
     public class CustomMailBlock : MailBlockFluent
     {
-        private static ICustomizableMailTemplate _mailTemplate;
+        private ICustomizableMailTemplate _mailTemplate;
 
-        private CustomMailBlock(MailBodyTemplate template, MailBlockFluent footer) : base(template, footer)
+        private CustomMailBlock(MailBodyTemplate template, MailBlockFluent footer, ICustomizableMailTemplate mailTemplate)
+            : base(template, footer)
         {
+            _mailTemplate = mailTemplate;
+
         }
 
         public static CustomMailBlock CreateBlock(ICustomizableMailTemplate mailTemplate)
         {
-            _mailTemplate = mailTemplate;
-            return new CustomMailBlock(null, null);
+            return new CustomMailBlock(null, null, mailTemplate);
         }
 
         public override MailBlockFluent Title(string content)
         {
-            Body.Append(_mailTemplate.GetTitle(content));
+            Body.Append(_mailTemplate.TitleTag(content));
             return this;
         }
 
         public override MailBlockFluent SubTitle(string content)
         {
-            Body.Append(_mailTemplate.GetSubTitle(content));
+            Body.Append(_mailTemplate.SubTitleTag(content));
             return this;
         }
 
         public override MailBlockFluent Paragraph(string content)
         {
-            Body.Append(_mailTemplate.GetParagraph(content));
+            Body.Append(_mailTemplate.ParagraphTag(content));
             return this;
         }
 
         public override MailBlockFluent Paragraph(MailBlockFluent block)
         {
             if (block is CustomMailBlock)
-                Body.Append(_mailTemplate.GetParagraph(block.ToString()));
+                Body.Append(_mailTemplate.ParagraphTag(block.ToString()));
             return this;
         }
 
         public override MailBlockFluent Link(string link)
         {
-            Body.Append(_mailTemplate.GetLink(link, link));
+            Body.Append(_mailTemplate.LinkTag(link, link));
             return this;
         }
 
         public override MailBlockFluent Link(string link, string text)
         {
-            Body.Append(_mailTemplate.GetLink(link, text));
+            Body.Append(_mailTemplate.LinkTag(link, text));
             return this;
         }
 
         public override MailBlockFluent Button(string link, string text)
         {
-            Body.Append(_mailTemplate.GetButton(link, text));
+            Body.Append(_mailTemplate.Button(link, text));
             return this;
         }
 
         public override MailBlockFluent Text(string text)
         {
-            Body.Append(_mailTemplate.GetText(text));
+            Body.Append(_mailTemplate.Text(text));
             return this;
         }
 
         public override MailBlockFluent StrongText(string text)
         {
-            Body.Append(_mailTemplate.GetStrongText(text));
+            Body.Append(_mailTemplate.StrongText(text));
             return this;
         }
 
@@ -80,18 +82,19 @@ namespace MailBodyPack
 
         public override MailBlockFluent LineBreak()
         {
-            Body.Append(_mailTemplate.GetLineBreak());
+            Body.Append(_mailTemplate.LineBreak);
             return this;
         }
 
         public override MailBlockFluent UnorderedList(IEnumerable<MailBlockFluent> items)
         {
+            
             var builder = new StringBuilder();
             foreach (var item in items)
             {
-                builder.Append(_mailTemplate.GetListItem(item.ToString()));
+                builder.Append(_mailTemplate.ListItemTag(item.ToString()));
             }
-            Body.Append(_mailTemplate.GetUnorderedList(builder.ToString()));
+            Body.Append(_mailTemplate.UnorderedListTag(builder.ToString()));
             return this;
         }
 
@@ -100,15 +103,21 @@ namespace MailBodyPack
             var builder = new StringBuilder();
             foreach (var item in items)
             {
-                builder.Append(_mailTemplate.GetListItem(item.ToString()));
+                builder.Append(_mailTemplate.ListItemTag(item.ToString()));
             }
-            Body.Append(_mailTemplate.GetOrderedList(builder.ToString()));
+            Body.Append(_mailTemplate.OrderedListTag(builder.ToString()));
             return this;
         }
 
         public override string ToString()
         {
-            return _mailTemplate.GetBody(Body.ToString());
+            var html = $"<!doctype html>" +
+                            $"<head>{_mailTemplate.Head}" +
+                                $"<body>{_mailTemplate.Body(Body.ToString())}</body>" +
+                                $"/head" +
+                       $"<html>";
+
+            return html;
         }
     }
 }

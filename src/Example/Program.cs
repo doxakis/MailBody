@@ -145,12 +145,12 @@ namespace Example
         {
             var template = MailTemplateBuilder
                 .CreatTemplate()
-                .DocumentStyle(null)
+                .Head(null)
+                .Body(b => $"{b}")
                 .ParagraphStyle(p => $"<p>{p}</p>")
                 .LinkStyle(null)
                 .TitleStyle(t => $"<h1>{t}</h1>")
                 .SubTitleStyle(null)
-                .BodyStyle(b => $"<html> <body>{b}</body> </html>")
                 .TextStyle(null)
                 .StrongTextStyle(null)
                 .UnorderedListStyle(null)

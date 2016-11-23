@@ -5,40 +5,40 @@ namespace MailBodyPack
 {
     internal class CustomizableMailTemplate : ICustomizableMailTemplate
     {
-        public CustomizableMailTemplate(Func<string, string> paragraph,
-            Func<string, string, string> link, Func<string, string> getTitle, Func<string, string> subTitle,
-            Func<string, string> getBody, Func<string, string> text, Func<string, string> strongText,
+        public CustomizableMailTemplate(string headTag, Func<string, string> bodyFunc, 
+            Func<string, string> paragraph, Func<string, string, string> link, 
+            Func<string, string> getTitle, Func<string, string> subTitle,
+            Func<string, string> text, Func<string, string> strongText,
             Func<string, string> unorderedList, Func<string, string> orderedList,
-            Func<string, string> listItem, Func<string> lineBreak,
-            Func<string, string, string> button, Func<string> style)
+            Func<string, string> listItem, string lineBreak, Func<string, string, string> button)
         {
-            GetParagraph = paragraph;
-            GetLink = link;
-            GetSubTitle = subTitle;
-            GetText = text;
-            GetStrongText = strongText;
-            GetUnorderedList = unorderedList;
-            GetOrderedList = orderedList;
-            GetListItem = listItem;
-            GetLineBreak = lineBreak;
-            GetButton = button;
-            GetStyle = style;
-            GetBody = getBody;
-            GetTitle = getTitle;
+            Head = headTag;
+            Body = bodyFunc;
+            ParagraphTag = paragraph;
+            LinkTag = link;
+            TitleTag = getTitle;
+            SubTitleTag = subTitle;
+            Text = text;
+            StrongText = strongText;
+            UnorderedListTag = unorderedList;
+            OrderedListTag = orderedList;
+            ListItemTag = listItem;
+            LineBreak = lineBreak;
+            Button = button;
         }
 
-        public Func<string, string> GetParagraph {get;}
-        public Func<string, string, string> GetLink {get;}
-        public Func<string, string> GetTitle { get; }
-        public Func<string, string> GetSubTitle {get;}
-        public Func<string, string> GetBody { get; }
-        public Func<string, string> GetText {get;}
-        public Func<string, string> GetStrongText {get;}
-        public Func<string, string> GetUnorderedList {get;}
-        public Func<string, string> GetOrderedList {get;}
-        public Func<string, string> GetListItem {get;}
-        public Func<string> GetLineBreak {get;}
-        public Func<string, string, string> GetButton {get;}
-        public Func<string> GetStyle {get;}
+        public string Head { get; }
+        public Func<string, string> Body { get; }
+        public Func<string, string> ParagraphTag { get; }
+        public Func<string, string, string> LinkTag { get; }
+        public Func<string, string> TitleTag { get; }
+        public Func<string, string> SubTitleTag { get; }
+        public Func<string, string> Text { get; }
+        public Func<string, string> StrongText { get; }
+        public Func<string, string> UnorderedListTag { get; }
+        public Func<string, string> OrderedListTag { get; }
+        public Func<string, string> ListItemTag { get; }
+        public string LineBreak { get; }
+        public Func<string, string, string> Button { get; }
     }
 }
