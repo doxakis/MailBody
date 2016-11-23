@@ -160,15 +160,10 @@ namespace Example
                 .ButtonStyle(null)
                 .Build();
 
-            var paragraph = MailBody
-                .CreateBody(template)
-                .Title("OMAR")
-                .Paragraph("Aloraini");
 
             var body = MailBody
                 .CreateBody(template)
                 .Title("Hello")
-                .Paragraph(paragraph)
                 .ToString();
 
             return body;

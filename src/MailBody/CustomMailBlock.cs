@@ -111,11 +111,15 @@ namespace MailBodyPack
 
         public override string ToString()
         {
-            var html = $"<!doctype html>" +
-                            $"<head>{_mailTemplate.Head}" +
-                                $"<body>{_mailTemplate.Body(Body.ToString())}</body>" +
-                                $"/head" +
-                       $"<html>";
+            var html =$@"<!doctype html>
+<html>
+    <head>
+        {_mailTemplate.Head}
+    </head>
+    <body>
+        {_mailTemplate.Body(Body.ToString())}
+    </body>
+</html>";
 
             return html;
         }
