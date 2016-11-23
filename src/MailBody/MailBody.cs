@@ -467,6 +467,22 @@ namespace MailBodyPack
             _body.Append(string.Format(_template.OrderedList, builder.ToString()));
             return this;
         }
+		
+		/// <summary>
+        /// Add a block list.
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public MailBlockFluent AddBlocksList(IEnumerable<MailBlockFluent> items)
+        {
+            var builder = new StringBuilder();
+            foreach (var item in items)
+            {
+                builder.Append(item.ToString());
+            }
+            _body.Append(builder.ToString());
+            return this;
+        }
 
         /// <summary>
         /// Generate the body.
