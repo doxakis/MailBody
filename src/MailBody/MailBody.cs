@@ -66,6 +66,15 @@ namespace MailBodyPack
         }
 
         /// <summary>
+        /// Starting point for creating a block of html.
+        /// </summary>
+        /// <returns></returns>
+        public static CustomMailBlock CreateBlock(ICustomizableMailTemplate template)
+        {
+            return CustomMailBlock.CreateBlock(template);
+        }
+
+        /// <summary>
         /// Escape greater-than sign and less-than sign characters.
         /// </summary>
         /// <param name="unescapeText"></param>
@@ -371,6 +380,20 @@ namespace MailBodyPack
         }
 
         /// <summary>
+        /// Add a new block
+        /// </summary>
+        /// <param name="block"></param>
+        /// <returns></returns>
+        public virtual MailBlockFluent Block(MailBlockFluent block) =>
+            Block(block.ToBlock());
+
+        public virtual MailBlockFluent Block(string block)
+        {
+            Body.Append($"<div>{block}</div>");
+            return this;
+        }
+
+        /// <summary>
         /// Add a new link
         /// </summary>
         /// <param name="link"></param>
@@ -487,6 +510,30 @@ namespace MailBodyPack
         {
             return string.Format(_template.Body, Body.ToString(),
                 _footer != null ? _footer.ToString() : string.Empty);
+        }
+
+        /// <summary>
+        /// Generate the body.
+        /// </summary>
+        /// <returns></returns>
+        public virtual string ToBody() =>
+            ToString();
+
+        /// <summary>
+        /// Generate the block.
+        /// </summary>
+        /// <returns></returns>
+        public virtual string ToBlock() => 
+            Body.ToString();
+
+        public virtual MailBlockFluent Paragraph(Func<ICustomizableMailTemplate, string> blockFunc)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual MailBlockFluent Block(Func<ICustomizableMailTemplate, string> blockFunc)
+        {
+            throw new NotImplementedException();
         }
     }
 }

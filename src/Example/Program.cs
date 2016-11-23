@@ -152,7 +152,7 @@ namespace Example
                 .TitleStyle(t => $"<h1>{t}</h1>")
                 .SubTitleStyle(null)
                 .TextStyle(null)
-                .StrongTextStyle(null)
+                .StrongTextStyle(s => $"<h2>{s}</h2>")
                 .UnorderedListStyle(null)
                 .OrderedListStyle(null)
                 .ListItemStyle(null)
@@ -164,7 +164,12 @@ namespace Example
             var body = MailBody
                 .CreateBody(template)
                 .Title("Hello")
-                .ToString();
+                .Block(t => MailBody
+                    .CreateBlock(t)
+                    .StrongText("Inside a block")
+                    .Paragraph("hmmm")
+                    .ToBlock())
+                .ToBody();
 
             return body;
         }

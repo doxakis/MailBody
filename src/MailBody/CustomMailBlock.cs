@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using MailBodyPack.Interfaces;
 
@@ -40,8 +41,7 @@ namespace MailBodyPack
 
         public override MailBlockFluent Paragraph(MailBlockFluent block)
         {
-            if (block is CustomMailBlock)
-                Body.Append(_mailTemplate.ParagraphTag(block.ToString()));
+            Body.Append(_mailTemplate.ParagraphTag(block.ToString()));
             return this;
         }
 
@@ -122,6 +122,19 @@ namespace MailBodyPack
 </html>";
 
             return html;
+        }
+
+        public override string ToBody() =>
+            ToString();
+
+        public override MailBlockFluent Paragraph(Func<ICustomizableMailTemplate, string> blockFunc)
+        {
+            return Paragraph(blockFunc(_mailTemplate));
+        }
+
+        public override MailBlockFluent Block(Func<ICustomizableMailTemplate, string> blockFunc)
+        {
+            return base.Block(blockFunc(_mailTemplate));
         }
     }
 }
