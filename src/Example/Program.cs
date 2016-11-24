@@ -145,21 +145,20 @@ namespace Example
         {
             var template = MailTemplateBuilder
                 .CreatTemplate()
-                .Head(null)
-                .Body(b => $"{b}")
-                .ParagraphStyle(p => $"<p>{p}</p>")
-                .LinkStyle(null)
-                .TitleStyle(t => $"<h1>{t}</h1>")
-                .SubTitleStyle(null)
-                .TextStyle(null)
-                .StrongTextStyle(s => $"<h2>{s}</h2>")
-                .UnorderedListStyle(null)
-                .OrderedListStyle(null)
-                .ListItemStyle(null)
-                .LineBreakStyle(null)
-                .ButtonStyle(null)
+                .Head()
+                .ParagraphStyle()
+                .LinkStyle()
+                .TitleStyle()
+                .SubTitleStyle()
+                .UnorderedListStyle()
+                .OrderedListStyle()
+                .ListItemStyle()
+                .ButtonStyle()
                 .Build();
 
+
+            var components = new string[] { "Contact", "About" };
+            var items = components.Select(item => MailBody.CreateBlock().Text(item));
 
             var body = MailBody
                 .CreateBody(template)
@@ -167,9 +166,12 @@ namespace Example
                 .Block(t => MailBody
                     .CreateBlock(t)
                     .StrongText("Inside a block")
-                    .Paragraph("hmmm")
-                    .ToBlock())
-                .ToBody();
+                    .Paragraph("hmmm"))
+                .Footer(t => MailBody
+                    .CreateBlock(t)
+                    .UnorderedList(items)
+                    .Text(" [Insert company name here] "))
+                .GenerateHtml();
 
             return body;
         }

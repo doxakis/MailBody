@@ -16,14 +16,13 @@ namespace MailBodyPack
 
         }
 
-        public static CustomMailBlock CreateBlock(ICustomizableMailTemplate mailTemplate)
-        {
-            return new CustomMailBlock(null, null, mailTemplate);
-        }
+        public static CustomMailBlock CreateBlock(ICustomizableMailTemplate mailTemplate) =>
+            new CustomMailBlock(null, null, mailTemplate);
+        
 
         public override MailBlockFluent Title(string content)
         {
-            Body.Append(_mailTemplate.TitleTag(content));
+            Body.Append(_mailTemplate.Title(content));
             return this;
         }
 
@@ -35,25 +34,25 @@ namespace MailBodyPack
 
         public override MailBlockFluent Paragraph(string content)
         {
-            Body.Append(_mailTemplate.ParagraphTag(content));
+            Body.Append(_mailTemplate.Paragraph(content));
             return this;
         }
 
         public override MailBlockFluent Paragraph(MailBlockFluent block)
         {
-            Body.Append(_mailTemplate.ParagraphTag(block.ToString()));
+            Body.Append(_mailTemplate.Paragraph(block.ToString()));
             return this;
         }
 
         public override MailBlockFluent Link(string link)
         {
-            Body.Append(_mailTemplate.LinkTag(link, link));
+            Body.Append(_mailTemplate.Link(link, link));
             return this;
         }
 
         public override MailBlockFluent Link(string link, string text)
         {
-            Body.Append(_mailTemplate.LinkTag(link, text));
+            Body.Append(_mailTemplate.Link(link, text));
             return this;
         }
 
@@ -92,9 +91,9 @@ namespace MailBodyPack
             var builder = new StringBuilder();
             foreach (var item in items)
             {
-                builder.Append(_mailTemplate.ListItemTag(item.ToString()));
+                builder.Append(_mailTemplate.ListItem(item.ToString()));
             }
-            Body.Append(_mailTemplate.UnorderedListTag(builder.ToString()));
+            Body.Append(_mailTemplate.UnorderedList(builder.ToString()));
             return this;
         }
 
@@ -103,9 +102,9 @@ namespace MailBodyPack
             var builder = new StringBuilder();
             foreach (var item in items)
             {
-                builder.Append(_mailTemplate.ListItemTag(item.ToString()));
+                builder.Append(_mailTemplate.ListItem(item.ToString()));
             }
-            Body.Append(_mailTemplate.OrderedListTag(builder.ToString()));
+            Body.Append(_mailTemplate.OrderedList(builder.ToString()));
             return this;
         }
 
@@ -124,7 +123,7 @@ namespace MailBodyPack
             return html;
         }
 
-        public override string ToBody() =>
+        public override string GenerateHtml() =>
             ToString();
 
         public override MailBlockFluent Paragraph(Func<ICustomizableMailTemplate, string> blockFunc)
@@ -132,9 +131,14 @@ namespace MailBodyPack
             return Paragraph(blockFunc(_mailTemplate));
         }
 
-        public override MailBlockFluent Block(Func<ICustomizableMailTemplate, string> blockFunc)
+        public override MailBlockFluent Block(Func<ICustomizableMailTemplate, MailBlockFluent> blockFunc)
         {
             return base.Block(blockFunc(_mailTemplate));
+        }
+
+        public override MailBlockFluent Footer(Func<ICustomizableMailTemplate, MailBlockFluent> blockFunc)
+        {
+            return base.Footer(blockFunc(_mailTemplate));
         }
     }
 }

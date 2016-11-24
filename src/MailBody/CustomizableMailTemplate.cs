@@ -14,30 +14,30 @@ namespace MailBodyPack
         {
             Head = headTag;
             Body = bodyFunc;
-            ParagraphTag = paragraph;
-            LinkTag = link;
-            TitleTag = getTitle;
+            Paragraph = paragraph;
+            Link = link;
+            Title = getTitle;
             SubTitleTag = subTitle;
             Text = text;
             StrongText = strongText;
-            UnorderedListTag = unorderedList;
-            OrderedListTag = orderedList;
-            ListItemTag = listItem;
+            UnorderedList = unorderedList;
+            OrderedList = orderedList;
+            ListItem = listItem;
             LineBreak = lineBreak;
             Button = button;
         }
 
         public string Head { get; }
         public Func<string, string> Body { get; }
-        public Func<string, string> ParagraphTag { get; }
-        public Func<string, string, string> LinkTag { get; }
-        public Func<string, string> TitleTag { get; }
+        public Func<string, string> Paragraph { get; }
+        public Func<string, string, string> Link { get; }
+        public Func<string, string> Title { get; }
         public Func<string, string> SubTitleTag { get; }
         public Func<string, string> Text { get; }
         public Func<string, string> StrongText { get; }
-        public Func<string, string> UnorderedListTag { get; }
-        public Func<string, string> OrderedListTag { get; }
-        public Func<string, string> ListItemTag { get; }
+        public Func<string, string> UnorderedList { get; }
+        public Func<string, string> OrderedList { get; }
+        public Func<string, string> ListItem { get; }
         public string LineBreak { get; }
         public Func<string, string, string> Button { get; }
     }

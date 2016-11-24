@@ -8,67 +8,56 @@ namespace MailBodyPack
 {
     public interface IHead
     {
-        IBody Head(string headTag);
-    }
-
-    public interface IBody
-    {
-        IParagraph Body(Func<string, string> bodyFunc);
+        IParagraph Head(string headTag);
+        IParagraph Head();
     }
 
     public interface IParagraph
     {
         ILink ParagraphStyle(Func<string, string> paragraphFunc);
+        ILink ParagraphStyle();
     }
 
     public interface ILink
     {
         ITitle LinkStyle(Func<string, string, string> linkFunc);
+        ITitle LinkStyle();
     }
 
     public interface ITitle
     {
         ISubTitle TitleStyle(Func<string, string> titleFunc);
+        ISubTitle TitleStyle();
     }
 
     public interface ISubTitle
     {
-        IText SubTitleStyle(Func<string, string> subTitleFunc);
-    }
-
-    public interface IText
-    {
-        IStrongText TextStyle(Func<string, string> textFunc);
-    }
-
-    public interface IStrongText
-    {
-        IUnorderedList StrongTextStyle(Func<string, string> strongTextFunc);
+        IUnorderedList SubTitleStyle(Func<string, string> subTitleFunc);
+        IUnorderedList SubTitleStyle();
     }
 
     public interface IUnorderedList
     {
         IOrderedList UnorderedListStyle(Func<string, string> unorderedListFunc);
+        IOrderedList UnorderedListStyle();
     }
 
     public interface IOrderedList
     {
         IListItem OrderedListStyle(Func<string, string> orderedListFunc);
+        IListItem OrderedListStyle();
     }
 
     public interface IListItem
     {
-        ILineBreak ListItemStyle(Func<string, string> listItemFunc);
-    }
-
-    public interface ILineBreak
-    {
-        IButton LineBreakStyle(string lineBreak);
+        IButton ListItemStyle(Func<string, string> listItemFunc);
+        IButton ListItemStyle();
     }
 
     public interface IButton
     {
         IBuild ButtonStyle(Func<string, string, string> buttonFunc);
+        IBuild ButtonStyle();
     }
 
     public interface IBuild
@@ -76,18 +65,19 @@ namespace MailBodyPack
         ICustomizableMailTemplate Build();
     }
 
-    public class MailTemplateBuilder : IHead, IParagraph, ILink, ITitle, ISubTitle, IBody, IText, IStrongText, IUnorderedList, IOrderedList, IListItem, ILineBreak, IButton, IBuild
+    public class MailTemplateBuilder : IHead, IParagraph, ILink, ITitle,
+        ISubTitle, IUnorderedList, IOrderedList, IListItem, IButton, IBuild
     {
         private string _headTag;
         private Func<string, string> _paragraphFunc;
         private Func<string, string, string> _linkFunc;
         private Func<string, string> _titleFunc;
         private Func<string, string> _subTitleFunc;
-        private Func<string, string> _bodyFunc;
+        private Func<string, string> _bodyFunc = b => b;
         private Func<string, string, string> _buttonFunc;
-        private Func<string, string> _textFunc;
-        private Func<string, string> _strongTextFunc;
-        private string _lineBreak;
+        private Func<string, string> _textFunc = t => t;
+        private Func<string, string> _strongTextFunc => t => $"<strong>{t}</strong>";
+        private string _lineBreak => "</br>";
         private Func<string, string> _unorderedListFunc;
         private Func<string, string> _orderedListFunc;
         private Func<string, string> _listItemFunc;
@@ -99,80 +89,74 @@ namespace MailBodyPack
         public static IHead CreatTemplate() =>
             new MailTemplateBuilder();
 
-        public IBody Head(string headTag)
+        public IParagraph Head() => Head("");
+        public IParagraph Head(string headTag)
         {
             _headTag = headTag;
             return this;
         }
 
-        public IParagraph Body(Func<string, string> bodyFunc)
-        {
-            _bodyFunc = bodyFunc;
-            return this;
-        }
-
+        public ILink ParagraphStyle() => ParagraphStyle(p => $"<p>{p}</p>");
         public ILink ParagraphStyle(Func<string, string> paragraphFunc)
         {
+            if (paragraphFunc == null) return ParagraphStyle();
             _paragraphFunc = paragraphFunc;
             return this;
         }
 
+        public ITitle LinkStyle() => LinkStyle((href, text) => $"<a href='{href}'>{text}</a>");
         public ITitle LinkStyle(Func<string, string, string> linkFunc)
         {
+            if (linkFunc == null) return LinkStyle();
             _linkFunc = linkFunc;
             return this;
         }
 
+        public ISubTitle TitleStyle() => TitleStyle(t => $"<h1>{t}</h1>");
         public ISubTitle TitleStyle(Func<string, string> titleFunc)
         {
+            if (titleFunc == null) return TitleStyle();
             _titleFunc = titleFunc;
             return this;
         }
 
-        public IText SubTitleStyle(Func<string, string> subTitleFunc)
+        public IUnorderedList SubTitleStyle() => SubTitleStyle(t => $"<h2>{t}</h2>");
+        public IUnorderedList SubTitleStyle(Func<string, string> subTitleFunc)
         {
+            if (subTitleFunc == null) return SubTitleStyle();
             _subTitleFunc = subTitleFunc;
             return this;
         }
 
-        public IStrongText TextStyle(Func<string, string> textFunc)
-        {
-            _textFunc = textFunc;
-            return this;
-        }
-
-        public IUnorderedList StrongTextStyle(Func<string, string> strongTextFunc)
-        {
-            _strongTextFunc = strongTextFunc;
-            return this;
-        }
-
+        public IOrderedList UnorderedListStyle() => UnorderedListStyle(u => $"<ul>{u}</ul>");
         public IOrderedList UnorderedListStyle(Func<string, string> unorderedListFunc)
         {
+            if (unorderedListFunc == null) return UnorderedListStyle();
             _unorderedListFunc = unorderedListFunc;
             return this;
         }
 
+        public IListItem OrderedListStyle() => OrderedListStyle(o => $"<ol>{o}</ol>");
         public IListItem OrderedListStyle(Func<string, string> orderedListFunc)
         {
+            if (orderedListFunc == null) return OrderedListStyle();
             _orderedListFunc = orderedListFunc;
             return this;
         }
 
-        public ILineBreak ListItemStyle(Func<string, string> listItemFunc)
+        public IButton ListItemStyle() => ListItemStyle(i => $"<li>{i}</li>");
+        public IButton ListItemStyle(Func<string, string> listItemFunc)
         {
+            if (listItemFunc == null) return ListItemStyle();
             _listItemFunc = listItemFunc;
             return this;
         }
 
-        public IButton LineBreakStyle(string lineBreak)
-        {
-            _lineBreak = lineBreak;
-            return this;
-        }
-
+        public IBuild ButtonStyle() => ButtonStyle((href, text) => 
+            $"<a href='{href}'> <button>{text}</button </a>");
         public IBuild ButtonStyle(Func<string, string, string> buttonFunc)
         {
+            if (buttonFunc == null) return ButtonStyle();
             _buttonFunc = buttonFunc;
             return this;
         }

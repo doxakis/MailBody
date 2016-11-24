@@ -6,15 +6,15 @@ namespace MailBodyPack.Interfaces
     {
         string Head { get; }
         Func<string, string> Body { get; }
-        Func<string, string> ParagraphTag { get; }
-        Func<string, string, string> LinkTag { get; }
-        Func<string, string> TitleTag { get; }
+        Func<string, string> Paragraph { get; }
+        Func<string, string, string> Link { get; }
+        Func<string, string> Title { get; }
         Func<string, string> SubTitleTag { get; }
         Func<string, string> Text { get; }
         Func<string, string> StrongText { get; }
-        Func<string, string> UnorderedListTag { get; }
-        Func<string, string> OrderedListTag { get; }
-        Func<string, string> ListItemTag { get; }
+        Func<string, string> UnorderedList { get; }
+        Func<string, string> OrderedList { get; }
+        Func<string, string> ListItem { get; }
         string LineBreak { get; }
         Func<string, string, string> Button { get; }
     }

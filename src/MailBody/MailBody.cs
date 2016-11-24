@@ -43,6 +43,7 @@ namespace MailBodyPack
             var instance = new MailBlockFluent(template, footer);
             return instance;
         }
+
         /// <summary>
         /// Create a custom template.
         /// </summary>
@@ -100,7 +101,7 @@ namespace MailBodyPack
             return builder.ToString();
         }
     }
-    
+
     public class MailBodyTemplate
     {
         public string Paragraph { get; set; }
@@ -328,7 +329,7 @@ namespace MailBodyPack
         protected StringBuilder Body = new StringBuilder();
         private MailBodyTemplate _template;
         private MailBlockFluent _footer;
-        
+
         public MailBlockFluent(MailBodyTemplate template, MailBlockFluent footer)
         {
             _template = template;
@@ -384,12 +385,9 @@ namespace MailBodyPack
         /// </summary>
         /// <param name="block"></param>
         /// <returns></returns>
-        public virtual MailBlockFluent Block(MailBlockFluent block) =>
-            Block(block.ToBlock());
-
-        public virtual MailBlockFluent Block(string block)
+        public virtual MailBlockFluent Block(MailBlockFluent block)
         {
-            Body.Append($"<div>{block}</div>");
+            Body.Append($"<div>{block.Body}</div>");
             return this;
         }
 
@@ -437,7 +435,7 @@ namespace MailBodyPack
             Body.Append(string.Format(_template.Text, MailBody.HtmlEncode(text)));
             return this;
         }
-        
+
         /// <summary>
         /// Add a strong text.
         /// </summary>
@@ -502,6 +500,12 @@ namespace MailBodyPack
             return this;
         }
 
+        public virtual MailBlockFluent Footer(MailBlockFluent block)
+        {
+            Body.Append($"<footer>{block.Body}</footer>");
+            return this;
+        }
+
         /// <summary>
         /// Generate the body.
         /// </summary>
@@ -516,24 +520,22 @@ namespace MailBodyPack
         /// Generate the body.
         /// </summary>
         /// <returns></returns>
-        public virtual string ToBody() =>
+        public virtual string GenerateHtml() =>
             ToString();
-
-        /// <summary>
-        /// Generate the block.
-        /// </summary>
-        /// <returns></returns>
-        public virtual string ToBlock() => 
-            Body.ToString();
 
         public virtual MailBlockFluent Paragraph(Func<ICustomizableMailTemplate, string> blockFunc)
         {
             throw new NotImplementedException();
         }
 
-        public virtual MailBlockFluent Block(Func<ICustomizableMailTemplate, string> blockFunc)
+        public virtual MailBlockFluent Block(Func<ICustomizableMailTemplate, MailBlockFluent> blockFunc)
         {
             throw new NotImplementedException();
+        }
+
+        public virtual MailBlockFluent Footer(Func<ICustomizableMailTemplate, MailBlockFluent> blockFunc)
+        {
+            return Block(blockFunc);
         }
     }
 }
