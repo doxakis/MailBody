@@ -8,10 +8,15 @@ namespace MailBodyPack
 {
     public interface IHead
     {
-        IParagraph Head(string headTag);
-        IParagraph Head();
+        IBody Head(string headTag);
+        IBody Head();
     }
 
+    public interface IBody
+    {
+        IParagraph Body(Func<string, string, string> bodyFunc);
+        IParagraph Body();
+    }
     public interface IParagraph
     {
         ILink ParagraphStyle(Func<string, string> paragraphFunc);
@@ -62,18 +67,18 @@ namespace MailBodyPack
 
     public interface IBuild
     {
-        ICustomizableMailTemplate Build();
+        ICustomMailTemplate Build();
     }
 
     public class MailTemplateBuilder : IHead, IParagraph, ILink, ITitle,
-        ISubTitle, IUnorderedList, IOrderedList, IListItem, IButton, IBuild
+        ISubTitle, IUnorderedList, IOrderedList, IListItem, IButton, IBuild, IBody
     {
         private string _headTag;
         private Func<string, string> _paragraphFunc;
         private Func<string, string, string> _linkFunc;
         private Func<string, string> _titleFunc;
         private Func<string, string> _subTitleFunc;
-        private Func<string, string> _bodyFunc = b => b;
+        private Func<string, string, string> _bodyFunc;
         private Func<string, string, string> _buttonFunc;
         private Func<string, string> _textFunc = t => t;
         private Func<string, string> _strongTextFunc => t => $"<strong>{t}</strong>";
@@ -89,10 +94,18 @@ namespace MailBodyPack
         public static IHead CreatTemplate() =>
             new MailTemplateBuilder();
 
-        public IParagraph Head() => Head("");
-        public IParagraph Head(string headTag)
+        public IBody Head() => Head("");
+        public IBody Head(string headTag)
         {
             _headTag = headTag;
+            return this;
+        }
+
+        public IParagraph Body() => Body((b,f) => b);
+        public IParagraph Body(Func<string, string, string> bodyFunc)
+        {
+            if (bodyFunc == null) Body();
+            _bodyFunc = bodyFunc;
             return this;
         }
 
@@ -161,9 +174,9 @@ namespace MailBodyPack
             return this;
         }
 
-        public ICustomizableMailTemplate Build()
+        public ICustomMailTemplate Build()
         {
-            return new CustomizableMailTemplate(_headTag, _bodyFunc,
+            return new CustomMailTemplate(_headTag, _bodyFunc,
                     _paragraphFunc, _linkFunc, _titleFunc, _subTitleFunc,
                     _textFunc, _strongTextFunc, _unorderedListFunc,
                     _orderedListFunc, _listItemFunc,_lineBreak,

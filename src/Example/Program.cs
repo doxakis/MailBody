@@ -143,19 +143,7 @@ namespace Example
 
         public static string GenerateCustomTemplate()
         {
-            var template = MailTemplateBuilder
-                .CreatTemplate()
-                .Head()
-                .ParagraphStyle()
-                .LinkStyle()
-                .TitleStyle()
-                .SubTitleStyle()
-                .UnorderedListStyle()
-                .OrderedListStyle()
-                .ListItemStyle()
-                .ButtonStyle()
-                .Build();
-
+            var template = MailTemplateFactory.ResponsiveTemplate();
 
             var components = new string[] { "Contact", "About" };
             var items = components.Select(item => MailBody.CreateBlock().Text(item));
@@ -169,8 +157,8 @@ namespace Example
                     .Paragraph("hmmm"))
                 .Footer(t => MailBody
                     .CreateBlock(t)
-                    .UnorderedList(items)
-                    .Text(" [Insert company name here] "))
+                    .Text("Simple Transactional Email")
+                    .Text("Company Inc, 3 Abbey Road, San Francisco CA 94102"))
                 .GenerateHtml();
 
             return body;

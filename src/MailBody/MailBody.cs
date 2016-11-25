@@ -49,7 +49,7 @@ namespace MailBodyPack
         /// </summary>
         /// <param name="template"></param>
         /// <returns></returns>
-        public static CustomMailBlock CreateBody(ICustomizableMailTemplate template)
+        public static CustomMailBlock CreateBody(ICustomMailTemplate template)
         {
             return CustomMailBlock.CreateBlock(template);
         }
@@ -70,7 +70,7 @@ namespace MailBodyPack
         /// Starting point for creating a block of html.
         /// </summary>
         /// <returns></returns>
-        public static CustomMailBlock CreateBlock(ICustomizableMailTemplate template)
+        public static CustomMailBlock CreateBlock(ICustomMailTemplate template)
         {
             return CustomMailBlock.CreateBlock(template);
         }
@@ -328,12 +328,12 @@ namespace MailBodyPack
     {
         protected StringBuilder Body = new StringBuilder();
         private MailBodyTemplate _template;
-        private MailBlockFluent _footer;
+        protected string FooterContent;
 
         public MailBlockFluent(MailBodyTemplate template, MailBlockFluent footer)
         {
             _template = template;
-            _footer = footer;
+            FooterContent = footer?.Body.ToString();
         }
 
         /// <summary>
@@ -502,7 +502,7 @@ namespace MailBodyPack
 
         public virtual MailBlockFluent Footer(MailBlockFluent block)
         {
-            Body.Append($"<footer>{block.Body}</footer>");
+            FooterContent = block.Body.ToString();
             return this;
         }
 
@@ -513,7 +513,7 @@ namespace MailBodyPack
         public override string ToString()
         {
             return string.Format(_template.Body, Body.ToString(),
-                _footer != null ? _footer.ToString() : string.Empty);
+                FooterContent ?? string.Empty);
         }
 
         /// <summary>
@@ -523,19 +523,20 @@ namespace MailBodyPack
         public virtual string GenerateHtml() =>
             ToString();
 
-        public virtual MailBlockFluent Paragraph(Func<ICustomizableMailTemplate, string> blockFunc)
+        public virtual MailBlockFluent Paragraph(Func<ICustomMailTemplate, string> blockFunc)
         {
             throw new NotImplementedException();
         }
 
-        public virtual MailBlockFluent Block(Func<ICustomizableMailTemplate, MailBlockFluent> blockFunc)
+        public virtual MailBlockFluent Block(Func<ICustomMailTemplate, MailBlockFluent> blockFunc)
         {
             throw new NotImplementedException();
         }
 
-        public virtual MailBlockFluent Footer(Func<ICustomizableMailTemplate, MailBlockFluent> blockFunc)
+        public virtual MailBlockFluent Footer(Func<ICustomMailTemplate, MailBlockFluent> blockFunc)
         {
             return Block(blockFunc);
         }
+
     }
 }

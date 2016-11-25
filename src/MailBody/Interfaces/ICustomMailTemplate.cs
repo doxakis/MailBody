@@ -2,10 +2,10 @@
 
 namespace MailBodyPack.Interfaces
 {
-    public interface ICustomizableMailTemplate
+    public interface ICustomMailTemplate
     {
         string Head { get; }
-        Func<string, string> Body { get; }
+        Func<string, string, string> Body { get; }
         Func<string, string> Paragraph { get; }
         Func<string, string, string> Link { get; }
         Func<string, string> Title { get; }

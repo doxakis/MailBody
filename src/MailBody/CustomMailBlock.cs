@@ -7,16 +7,16 @@ namespace MailBodyPack
 {
     public class CustomMailBlock : MailBlockFluent
     {
-        private ICustomizableMailTemplate _mailTemplate;
+        private ICustomMailTemplate _mailTemplate;
 
-        private CustomMailBlock(MailBodyTemplate template, MailBlockFluent footer, ICustomizableMailTemplate mailTemplate)
+        private CustomMailBlock(MailBodyTemplate template, MailBlockFluent footer, ICustomMailTemplate mailTemplate)
             : base(template, footer)
         {
             _mailTemplate = mailTemplate;
 
         }
 
-        public static CustomMailBlock CreateBlock(ICustomizableMailTemplate mailTemplate) =>
+        public static CustomMailBlock CreateBlock(ICustomMailTemplate mailTemplate) =>
             new CustomMailBlock(null, null, mailTemplate);
         
 
@@ -115,9 +115,7 @@ namespace MailBodyPack
     <head>
         {_mailTemplate.Head}
     </head>
-    <body>
-        {_mailTemplate.Body(Body.ToString())}
-    </body>
+        {_mailTemplate.Body(Body.ToString(), FooterContent)}
 </html>";
 
             return html;
@@ -126,17 +124,17 @@ namespace MailBodyPack
         public override string GenerateHtml() =>
             ToString();
 
-        public override MailBlockFluent Paragraph(Func<ICustomizableMailTemplate, string> blockFunc)
+        public override MailBlockFluent Paragraph(Func<ICustomMailTemplate, string> blockFunc)
         {
             return Paragraph(blockFunc(_mailTemplate));
         }
 
-        public override MailBlockFluent Block(Func<ICustomizableMailTemplate, MailBlockFluent> blockFunc)
+        public override MailBlockFluent Block(Func<ICustomMailTemplate, MailBlockFluent> blockFunc)
         {
             return base.Block(blockFunc(_mailTemplate));
         }
 
-        public override MailBlockFluent Footer(Func<ICustomizableMailTemplate, MailBlockFluent> blockFunc)
+        public override MailBlockFluent Footer(Func<ICustomMailTemplate, MailBlockFluent> blockFunc)
         {
             return base.Footer(blockFunc(_mailTemplate));
         }

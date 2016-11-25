@@ -3,9 +3,9 @@ using MailBodyPack.Interfaces;
 
 namespace MailBodyPack
 {
-    internal class CustomizableMailTemplate : ICustomizableMailTemplate
+    internal class CustomMailTemplate : ICustomMailTemplate
     {
-        public CustomizableMailTemplate(string headTag, Func<string, string> bodyFunc, 
+        public CustomMailTemplate(string headTag, Func<string, string, string> bodyFunc, 
             Func<string, string> paragraph, Func<string, string, string> link, 
             Func<string, string> getTitle, Func<string, string> subTitle,
             Func<string, string> text, Func<string, string> strongText,
@@ -28,7 +28,7 @@ namespace MailBodyPack
         }
 
         public string Head { get; }
-        public Func<string, string> Body { get; }
+        public Func<string, string, string> Body { get; }
         public Func<string, string> Paragraph { get; }
         public Func<string, string, string> Link { get; }
         public Func<string, string> Title { get; }
