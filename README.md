@@ -1,5 +1,5 @@
 # MailBody [![Build Status](https://travis-ci.org/doxakis/MailBody.svg?branch=master)](https://travis-ci.org/doxakis/MailBody)
-MailBody is a library for generating simple transaction mail by using a fluent interface.
+MailBody is a library for generating transactional email by using a fluent interface.
 
 The current mail template is based on https://github.com/leemunroe/responsive-html-email-template
 (MIT License 2013 Lee Munroe)
