@@ -7,19 +7,19 @@ namespace MailBodyPack
 {
     public class MailBodyTemplate
     {
-        public Func<ContentElement, string> _paragraph { get; set; }
-        public Func<ActionElement, string> _link { get; set; }
-        public Func<ContentElement, string> _title { get; set; }
-        public Func<ContentElement, string> _subTitle { get; set; }
-        public Func<BodyElement, string> _body { get; set; }
-        public Func<ContentElement, string> _block { get; set; }
-        public Func<ActionElement, string> _button { get; set; }
-        public Func<ContentElement, string> _text { get; set; }
-        public Func<ContentElement, string> _strongText { get; set; }
-        public Func<ContentElement, string> _lineBreak { get; set; }
-        public Func<ContentElement, string> _unorderedList { get; set; }
-        public Func<ContentElement, string> _orderedList { get; set; }
-        public Func<ContentElement, string> _listItem { get; set; }
+        private Func<ContentElement, string> _paragraph { get; set; }
+        private Func<ActionElement, string> _link { get; set; }
+        private Func<ContentElement, string> _title { get; set; }
+        private Func<ContentElement, string> _subTitle { get; set; }
+        private Func<BodyElement, string> _body { get; set; }
+        private Func<ContentElement, string> _block { get; set; }
+        private Func<ActionElement, string> _button { get; set; }
+        private Func<ContentElement, string> _text { get; set; }
+        private Func<ContentElement, string> _strongText { get; set; }
+        private Func<ContentElement, string> _lineBreak { get; set; }
+        private Func<ContentElement, string> _unorderedList { get; set; }
+        private Func<ContentElement, string> _orderedList { get; set; }
+        private Func<ContentElement, string> _listItem { get; set; }
 
         public Func<ContentElement, string> Paragraph() => _paragraph;
         public Func<ActionElement, string> Link() => _link;
