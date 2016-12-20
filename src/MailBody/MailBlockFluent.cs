@@ -9,14 +9,16 @@ namespace MailBodyPack
 {
     public class MailBlockFluent
     {
-        private StringBuilder _body = new StringBuilder();
+        private List<Func<string>> _commands = new List<Func<string>>();
         private MailBodyTemplate _template;
         private MailBlockFluent _footer;
+        private bool _isBlock;
 
-        public MailBlockFluent(MailBodyTemplate template, MailBlockFluent footer)
+        public MailBlockFluent(MailBodyTemplate template, MailBlockFluent footer, bool isBlock)
         {
             _template = template;
             _footer = footer;
+            _isBlock = isBlock;
         }
 
         /// <summary>
@@ -26,8 +28,15 @@ namespace MailBodyPack
         /// <returns></returns>
         public MailBlockFluent Title(string content, dynamic attributes = null)
         {
-            var element = new ContentElement { Content = MailBody.HtmlEncode(content), Attributes = attributes };
-            _body.Append(_template.Title()(element));
+            _commands.Add(() =>
+            {
+                var element = new ContentElement
+                {
+                    Content = MailBody.HtmlEncode(content),
+                    Attributes = attributes
+                };
+                return _template.Title()(element);
+            });
             return this;
         }
 
@@ -38,8 +47,15 @@ namespace MailBodyPack
         /// <returns></returns>
         public MailBlockFluent SubTitle(string content, dynamic attributes = null)
         {
-            var element = new ContentElement { Content = MailBody.HtmlEncode(content), Attributes = attributes };
-            _body.Append(_template.SubTitle()(element));
+            _commands.Add(() =>
+            {
+                var element = new ContentElement
+                {
+                    Content = MailBody.HtmlEncode(content),
+                    Attributes = attributes
+                };
+                return _template.SubTitle()(element);
+            });
             return this;
         }
 
@@ -50,8 +66,15 @@ namespace MailBodyPack
         /// <returns></returns>
         public MailBlockFluent Paragraph(string content, dynamic attributes = null)
         {
-            var element = new ContentElement { Content = MailBody.HtmlEncode(content), Attributes = attributes };
-            _body.Append(_template.Paragraph()(element));
+            _commands.Add(() =>
+            {
+                var element = new ContentElement
+                {
+                    Content = MailBody.HtmlEncode(content),
+                    Attributes = attributes
+                };
+                return _template.Paragraph()(element);
+            });
             return this;
         }
 
@@ -62,8 +85,17 @@ namespace MailBodyPack
         /// <returns></returns>
         public MailBlockFluent Paragraph(MailBlockFluent block, dynamic attributes = null)
         {
-            var element = new ContentElement { Content = block.ToString() };
-            _body.Append(_template.Paragraph()(element));
+            _commands.Add(() =>
+            {
+                // Propagate template.
+                block._template = this._template;
+
+                var element = new ContentElement
+                {
+                    Content = block.ToString()
+                };
+                return _template.Paragraph()(element);
+            });
             return this;
         }
 
@@ -85,9 +117,16 @@ namespace MailBodyPack
         /// <returns></returns>
         public MailBlockFluent Link(string link, string text, dynamic attributes = null)
         {
-            var element = new ActionElement { Content = MailBody.HtmlEncode(text), Link = MailBody.AttributeEncode(link), Attributes = attributes };
-            _body.Append(_template.Link()(element));
-
+            _commands.Add(() =>
+            {
+                var element = new ActionElement
+                {
+                    Content = MailBody.HtmlEncode(text),
+                    Link = MailBody.AttributeEncode(link),
+                    Attributes = attributes
+                };
+                return _template.Link()(element);
+            });
             return this;
         }
 
@@ -97,11 +136,18 @@ namespace MailBodyPack
         /// <param name="link"></param>
         /// <param name="text"></param>
         /// <returns></returns>
-        public MailBlockFluent Button(string link, string text, ExpandoObject attributes = null)
+        public MailBlockFluent Button(string link, string text, dynamic attributes = null)
         {
-            var element = new ActionElement { Content = MailBody.HtmlEncode(text), Link = MailBody.AttributeEncode(link), Attributes = attributes };
-            _body.Append(_template.Button()(element));
-
+            _commands.Add(() =>
+            {
+                var element = new ActionElement
+                {
+                    Content = MailBody.HtmlEncode(text),
+                    Link = MailBody.AttributeEncode(link),
+                    Attributes = attributes
+                };
+                return _template.Button()(element);
+            });
             return this;
         }
 
@@ -112,8 +158,15 @@ namespace MailBodyPack
         /// <returns></returns>
         public MailBlockFluent Text(string text, dynamic attributes = null)
         {
-            var element = new ContentElement { Content = MailBody.HtmlEncode(text), Attributes = attributes };
-            _body.Append(_template.Text()(element));
+            _commands.Add(() =>
+            {
+                var element = new ContentElement
+                {
+                    Content = MailBody.HtmlEncode(text),
+                    Attributes = attributes
+                };
+                return _template.Text()(element);
+            });
             return this;
         }
 
@@ -124,8 +177,15 @@ namespace MailBodyPack
         /// <returns></returns>
         public MailBlockFluent StrongText(string text, dynamic attributes = null)
         {
-            var element = new ContentElement { Content = MailBody.HtmlEncode(text), Attributes = attributes };
-            _body.Append(_template.StrongText()(element));
+            _commands.Add(() =>
+            {
+                var element = new ContentElement
+                {
+                    Content = MailBody.HtmlEncode(text),
+                    Attributes = attributes
+                };
+                return _template.StrongText()(element);
+            });
             return this;
         }
 
@@ -136,7 +196,10 @@ namespace MailBodyPack
         /// <returns></returns>
         public MailBlockFluent Raw(string html)
         {
-            _body.Append(html);
+            _commands.Add(() =>
+            {
+                return html;
+            });
             return this;
         }
 
@@ -146,8 +209,15 @@ namespace MailBodyPack
         /// <returns></returns>
         public MailBlockFluent LineBreak(dynamic attributes = null)
         {
-            var element = new ContentElement { Content = string.Empty, Attributes = attributes };
-            _body.Append(_template.LineBreak()(element));
+            _commands.Add(() =>
+            {
+                var element = new ContentElement
+                {
+                    Content = string.Empty,
+                    Attributes = attributes
+                };
+                return _template.LineBreak()(element);
+            });
             return this;
         }
 
@@ -158,14 +228,17 @@ namespace MailBodyPack
         /// <returns></returns>
         public MailBlockFluent UnorderedList(IEnumerable<MailBlockFluent> items, dynamic attributes = null)
         {
-            var builder = new StringBuilder();
-            foreach (var item in items)
+            _commands.Add(() =>
             {
-                var itemElement = new ContentElement { Content = MailBody.HtmlEncode(item.ToString()), Attributes = attributes };
-                _body.Append(_template.ListItem()(itemElement));
-            }
-            var element = new ContentElement { Content = builder.ToString(), Attributes = attributes };
-            _body.Append(_template.UnorderedList()(element));
+                var builder = new StringBuilder();
+                foreach (var item in items)
+                {
+                    var itemElement = new ContentElement { Content = MailBody.HtmlEncode(item.ToString()), Attributes = attributes };
+                    builder.Append(_template.ListItem()(itemElement));
+                }
+                var element = new ContentElement { Content = builder.ToString(), Attributes = attributes };
+                return _template.UnorderedList()(element);
+            });
             return this;
         }
 
@@ -176,14 +249,17 @@ namespace MailBodyPack
         /// <returns></returns>
         public MailBlockFluent OrderedList(IEnumerable<MailBlockFluent> items, dynamic attributes = null)
         {
-            var builder = new StringBuilder();
-            foreach (var item in items)
+            _commands.Add(() =>
             {
-                var itemElement = new ContentElement { Content = MailBody.HtmlEncode(item.ToString()), Attributes = attributes };
-                _body.Append(_template.ListItem()(itemElement));
-            }
-            var element = new ContentElement { Content = builder.ToString(), Attributes = attributes };
-            _body.Append(_template.OrderedList()(element));
+                var builder = new StringBuilder();
+                foreach (var item in items)
+                {
+                    var itemElement = new ContentElement { Content = MailBody.HtmlEncode(item.ToString()), Attributes = attributes };
+                    builder.Append(_template.ListItem()(itemElement));
+                }
+                var element = new ContentElement { Content = builder.ToString(), Attributes = attributes };
+                return _template.OrderedList()(element);
+            });
             return this;
         }
 
@@ -194,12 +270,18 @@ namespace MailBodyPack
         /// <returns></returns>
         public MailBlockFluent AddBlocksList(IEnumerable<MailBlockFluent> items)
         {
-            var builder = new StringBuilder();
-            foreach (var item in items)
+            _commands.Add(() =>
             {
-                builder.Append(item.ToString());
-            }
-            _body.Append(builder.ToString());
+                var builder = new StringBuilder();
+                foreach (var item in items)
+                {
+                    // Propagate template.
+                    item._template = this._template;
+
+                    builder.Append(item.ToString());
+                }
+                return builder.ToString();
+            });
             return this;
         }
 
@@ -215,14 +297,42 @@ namespace MailBodyPack
         /// <returns></returns>
         public string GenerateHtml(dynamic attributes = null)
         {
-            var element = new BodyElement
+            if (_template == null)
             {
-                Content = _body.ToString(),
-                Attributes = attributes,
-                Footer = _footer != null ? _footer.ToString() : string.Empty
-            };
+                _template = MailBodyTemplate.GetDefaultTemplate();
+            }
 
-            return _template.Body()(element);
+            var builder = new StringBuilder();
+            foreach (var command in _commands)
+            {
+                builder.Append(command());
+            }
+
+            if (_isBlock)
+            {
+                var element = new ContentElement
+                {
+                    Content = builder.ToString(),
+                    Attributes = attributes
+                };
+                return _template.Block()(element);
+            }
+            else
+            {
+                // Propagate template.
+                if (_footer != null)
+                {
+                    _footer._template = this._template;
+                }
+
+                var element = new BodyElement
+                {
+                    Content = builder.ToString(),
+                    Attributes = attributes,
+                    Footer = _footer != null ? _footer.ToString() : string.Empty
+                };
+                return _template.Body()(element);
+            }
         }
     }
 }

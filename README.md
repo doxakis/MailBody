@@ -122,10 +122,8 @@ template
         (m.IsProperty(() => m.Attributes.color) ? $"color:{m.Attributes.color};" : string.Empty) +
         (m.IsProperty(() => m.Attributes.backgroundColor) ? $"background-color:{m.Attributes.backgroundColor};" : string.Empty) +
         $"'>{m.Content}</p>")
-    .Body(m => "<html><body>" + m.Content + "<br />" + m.Footer + "</body></html>");
-
-var footerTemplate = MailBodyTemplate.BlockTemplate();
-footerTemplate.Text(m =>
+    .Body(m => "<html><body>" + m.Content + "<br />" + m.Footer + "</body></html>")
+    .Text(m =>
         $"<span style='" +
         (m.IsProperty(() => m.Attributes.color) ? $"color:{m.Attributes.color};" : string.Empty) +
         (m.IsProperty(() => m.Attributes.backgroundColor) ? $"background-color:{m.Attributes.backgroundColor};" : string.Empty) +
@@ -133,7 +131,7 @@ footerTemplate.Text(m =>
         $"'>{m.Content}</span>");
 
 var footer = MailBody
-    .CreateBlock(footerTemplate)
+    .CreateBlock()
     .Text("Follow ", new { color = "red"})
     .Link("http://twitter.com/example", "@Example")
     .Text(" on Twitter.", new { color = "#009900", backgroundColor = "#CCCCCC", fontWeight = "bold" });
@@ -169,7 +167,53 @@ body.Button("https://www.example.com/", "Second button")
 var htmlBody = body.ToString();
 ```
 
-[Preview](https://cdn.rawgit.com/doxakis/MailBody/master/src/Example/Output/AnotherWay.html)
+## Override the default template
+This example is based on [Postmark templates](https://github.com/wildbit/postmark-templates).
+
+```
+var template = MailBodyTemplate.GetDefaultTemplate()
+    .Paragraph(m => $"<p style='font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;'>{m.Content}</p>")
+    .Link(m => $"<a href='{m.Link}'>{m.Content}</a>")
+    .Title(m => $"<h1>{m.Content}</h1>")
+    .SubTitle(m => $"<h2>{m.Content}</h2>")
+    .Text(m => $"{m.Content}")
+    .StrongText(m => $"<strong>{m.Content}</strong>")
+    .UnorderedList(m => $"<ul>{m.Content}</ul>")
+    .OrderedList(m => $"<ol>{m.Content}</ol>")
+    .ListItem(m => $"<li>{m.Content}</li>")
+    .LineBreak(m => $"</br>")
+    .Button(m => @"<table class='body-action' align='center' width='100%' cellpadding='0' cellspacing='0'>
+            <tr>
+                <td align='center'>
+                <table width='100%' border='0' cellspacing='0' cellpadding='0'>
+                    <tr>
+                    <td align='center'>
+                        <table border='0' cellspacing='0' cellpadding='0'>
+                        <tr>
+                            <td>
+                            <a href='" + m.Link + @"' class='button button--' target='_blank'>" + m.Content + @"</a>
+                            </td>
+                        </tr>
+                        </table>
+                    </td>
+                    </tr>
+                </table>
+                </td>
+            </tr>
+            </table>")
+    .Block(m => m.Content)
+    .Body(m => @"<html>... (see the examples for the complete source) ...</html>");
+
+var body = MailBody
+    .CreateBody(template)
+    .Paragraph("Please confirm your email address by clicking the link below.")
+    .Paragraph("We may need to send you critical information about our service and it is important that we have an accurate email address.")
+    .Button("https://example.com/", "Confirm Email Address")
+    .Paragraph("— [Insert company name here]")
+    .ToString();
+```
+
+[Preview](https://cdn.rawgit.com/doxakis/MailBody/master/src/Example/Output/OverrideDefaultTemplate.html)
 
 # Copyright and license
 Code released under the MIT license.

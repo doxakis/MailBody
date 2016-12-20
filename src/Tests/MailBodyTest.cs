@@ -52,7 +52,7 @@ namespace Tests
                 .Body(m => "<html><body>" + m.Content + "<br />" + m.Footer + "</body></html>");
 
             var footer = MailBody
-                .CreateBlock(template)
+                .CreateBlock()
                 .Text("Follow ")
                 .Link("http://twitter.com/example", "@Example")
                 .Text(" on Twitter.");

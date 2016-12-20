@@ -12,6 +12,7 @@ namespace MailBodyPack
         public Func<ContentElement, string> _title { get; set; }
         public Func<ContentElement, string> _subTitle { get; set; }
         public Func<BodyElement, string> _body { get; set; }
+        public Func<ContentElement, string> _block { get; set; }
         public Func<ActionElement, string> _button { get; set; }
         public Func<ContentElement, string> _text { get; set; }
         public Func<ContentElement, string> _strongText { get; set; }
@@ -25,6 +26,7 @@ namespace MailBodyPack
         public Func<ContentElement, string> Title() => _title;
         public Func<ContentElement, string> SubTitle() => _subTitle;
         public Func<BodyElement, string> Body() => _body;
+        public Func<ContentElement, string> Block() => _block;
         public Func<ActionElement, string> Button() => _button;
         public Func<ContentElement, string> Text() => _text;
         public Func<ContentElement, string> StrongText() => _strongText;
@@ -60,6 +62,12 @@ namespace MailBodyPack
         public MailBodyTemplate Body(Func<BodyElement, string> newFunc)
         {
             _body = newFunc;
+            return this;
+        }
+
+        public MailBodyTemplate Block(Func<ContentElement, string> newFunc)
+        {
+            _block = newFunc;
             return this;
         }
 
@@ -106,17 +114,6 @@ namespace MailBodyPack
         }
         
         /// <summary>
-        /// Get the default template for block of html.
-        /// </summary>
-        /// <returns></returns>
-        public static MailBodyTemplate BlockTemplate()
-        {
-            var template = GetDefaultTemplate();
-            template.Body(m => m.Content);
-            return template;
-        }
-
-        /// <summary>
         /// Get the default template for body.
         /// </summary>
         /// <returns></returns>
@@ -148,6 +145,7 @@ namespace MailBodyPack
     </tr>
     </tbody>
 </table>")
+                .Block(m => m.Content)
                 .Body(m => @"<!doctype html>
 <html>
   <head>

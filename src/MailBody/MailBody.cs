@@ -14,9 +14,7 @@ namespace MailBodyPack
         /// <returns></returns>
         public static MailBlockFluent CreateBody()
         {
-            var template = MailBodyTemplate.GetDefaultTemplate();
-            var instance = new MailBlockFluent(template, null);
-            return instance;
+            return CreateBody(null);
         }
 
         /// <summary>
@@ -26,9 +24,7 @@ namespace MailBodyPack
         /// <returns></returns>
         public static MailBlockFluent CreateBody(MailBlockFluent footer)
         {
-            var template = MailBodyTemplate.GetDefaultTemplate();
-            var instance = new MailBlockFluent(template, footer);
-            return instance;
+            return CreateBody(null, null);
         }
 
         /// <summary>
@@ -37,9 +33,9 @@ namespace MailBodyPack
         /// <param name="template"></param>
         /// <param name="footer"></param>
         /// <returns></returns>
-        public static MailBlockFluent CreateBody(MailBodyTemplate template, MailBlockFluent footer)
+        public static MailBlockFluent CreateBody(MailBodyTemplate template, MailBlockFluent footer = null)
         {
-            var instance = new MailBlockFluent(template, footer);
+            var instance = new MailBlockFluent(template, footer, isBlock: false);
             return instance;
         }
 
@@ -47,10 +43,9 @@ namespace MailBodyPack
         /// Starting point for creating a block of html.
         /// </summary>
         /// <returns></returns>
-        public static MailBlockFluent CreateBlock(MailBodyTemplate template = null)
+        public static MailBlockFluent CreateBlock()
         {
-            template = template ?? MailBodyTemplate.BlockTemplate();
-            var instance = CreateBody(template, null);
+            var instance = new MailBlockFluent(null, null, isBlock: true);
             return instance;
         }
 
