@@ -1,4 +1,4 @@
-﻿{
+{
   "version": "1.0.5-*",
   "packOptions": {
     "summary": "Create transactional email with a fluent interface (.net)",
@@ -14,9 +14,11 @@
   },
   "title": "MailBody",
   "description": "Easier transactional mail creation (.net)",
-  
+
   "dependencies": {
-    "NETStandard.Library": "1.6.0"
+    "Microsoft.CSharp": "4.0.1",
+    "NETStandard.Library": "1.6.0",
+    "System.Dynamic.Runtime": "4.0.11"
   },
 
   "frameworks": {

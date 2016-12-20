@@ -2494,11 +2494,13 @@
           "netcoreapp1.0/Example.dll": {}
         }
       },
-      "MailBody/1.0.4": {
+      "MailBody/1.0.5": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.6",
         "dependencies": {
-          "NETStandard.Library": "1.6.0"
+          "Microsoft.CSharp": "4.0.1",
+          "NETStandard.Library": "1.6.0",
+          "System.Dynamic.Runtime": "4.0.11"
         },
         "compile": {
           "netstandard1.6/MailBody.dll": {}
@@ -7494,7 +7496,7 @@
       "path": "../Example/project.json",
       "msbuildProject": "../Example/Example.xproj"
     },
-    "MailBody/1.0.4": {
+    "MailBody/1.0.5": {
       "type": "project",
       "path": "../MailBody/project.json",
       "msbuildProject": "../MailBody/MailBody.xproj"

@@ -56,21 +56,35 @@ namespace Example
 
         public static string GenerateCustomThemeAndRawHtml()
         {
-            var footer = MailBody
-                .CreateBlock()
-                .Text("Follow ")
-                .Link("http://twitter.com/example", "@Example")
-                .Text(" on Twitter.");
-
             var template = MailBodyTemplate.GetDefaultTemplate();
-            template.Paragraph = "<p style='color:blue;'>{0}</p>";
+            template
+                .Paragraph(m =>
+                    "<p style='" +
+                    (m.IsProperty(() => m.Attributes.color) ? $"color:{m.Attributes.color};" : string.Empty) +
+                    (m.IsProperty(() => m.Attributes.backgroundColor) ? $"background-color:{m.Attributes.backgroundColor};" : string.Empty) +
+                    $"'>{m.Content}</p>")
+                .Body(m => "<html><body>" + m.Content + "<br />" + m.Footer + "</body></html>");
 
+            var footerTemplate = MailBodyTemplate.BlockTemplate();
+            footerTemplate.Text(m =>
+                    $"<span style='" +
+                    (m.IsProperty(() => m.Attributes.color) ? $"color:{m.Attributes.color};" : string.Empty) +
+                    (m.IsProperty(() => m.Attributes.backgroundColor) ? $"background-color:{m.Attributes.backgroundColor};" : string.Empty) +
+                    (m.IsProperty(() => m.Attributes.fontWeight) ? $"font-weight:{m.Attributes.fontWeight};" : string.Empty) +
+                    $"'>{m.Content}</span>");
+
+            var footer = MailBody
+                .CreateBlock(footerTemplate)
+                .Text("Follow ", new { color = "red"})
+                .Link("http://twitter.com/example", "@Example")
+                .Text(" on Twitter.", new { color = "#009900", backgroundColor = "#CCCCCC", fontWeight = "bold" });
+            
             var body = MailBody
                 .CreateBody(template, footer)
                 .Paragraph("Please confirm your email address by clicking the link below.")
                 .Raw("<p>We may need to send you <strong>critical information</strong> about our service and it is important that we have an accurate email address.</p>")
                 .Button("https://www.example.com/", "Confirm Email Address")
-                .Paragraph("— [Insert company name here]")
+                .Paragraph("— [Insert company name here]", new { color = "white", backgroundColor = "black" })
                 .ToString();
             
             return body;

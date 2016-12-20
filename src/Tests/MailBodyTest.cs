@@ -47,15 +47,16 @@ namespace Tests
         [Fact]
         public void CustomThemeAndRawHtml()
         {
+            var template = MailBodyTemplate.GetDefaultTemplate()
+                .Paragraph(m => $"<p style='color:blue;'>{m.Content}</p>")
+                .Body(m => "<html><body>" + m.Content + "<br />" + m.Footer + "</body></html>");
+
             var footer = MailBody
-                .CreateBlock()
+                .CreateBlock(template)
                 .Text("Follow ")
                 .Link("http://twitter.com/example", "@Example")
                 .Text(" on Twitter.");
-
-            var template = MailBodyTemplate.GetDefaultTemplate();
-            template.Paragraph = "<p style='color:blue;'>{0}</p>";
-
+            
             var body = MailBody
                 .CreateBody(template, footer)
                 .Paragraph("Please confirm your email address by clicking the link below.")
