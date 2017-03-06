@@ -24,7 +24,7 @@ namespace MailBodyPack
         /// <returns></returns>
         public static MailBlockFluent CreateBody(MailBlockFluent footer)
         {
-            return CreateBody(null, null);
+            return CreateBody(null, footer);
         }
 
         /// <summary>
