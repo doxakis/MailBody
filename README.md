@@ -113,6 +113,23 @@ var body = MailBody
 
 [Preview](https://rawgit.com/doxakis/MailBody/master/src/Example/Output/Withfooter.html)
 
+## With image
+**Please note** You can use CID Embedded Images, Base64 Encoding or use absolute url.
+Image may not appear on all email client. So, make sure to do some tests.
+
+```
+var body = MailBody
+    .CreateBody()
+    .Image("https://placehold.it/540x70/ffffff/e8117f?text=My+logo", "My company name")
+    .Paragraph("Please confirm your email address by clicking the link below.")
+    .Paragraph("We may need to send you critical information about our service and it is important that we have an accurate email address.")
+    .Button("https://example.com/", "Confirm Email Address")
+    .Paragraph("— [Insert company name here]")
+    .ToString();
+```
+
+[Preview](https://rawgit.com/doxakis/MailBody/master/src/Example/Output/WithImage.html)
+
 ## Custom theme & Raw html
 ```
 var template = MailBodyTemplate.GetDefaultTemplate();

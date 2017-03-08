@@ -334,5 +334,20 @@ namespace MailBodyPack
                 return _template.Body()(element);
             }
         }
+
+        public MailBlockFluent Image(string link, string alternativeText, dynamic attributes = null)
+        {
+            _commands.Add(() =>
+            {
+                var element = new ImageElement
+                {
+                    Content = MailBody.HtmlEncode(alternativeText),
+                    Src = MailBody.AttributeEncode(link),
+                    Attributes = attributes
+                };
+                return _template.Image()(element);
+            });
+            return this;
+        }
     }
 }

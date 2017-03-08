@@ -20,6 +20,7 @@ namespace MailBodyPack
         private Func<ContentElement, string> _unorderedList { get; set; }
         private Func<ContentElement, string> _orderedList { get; set; }
         private Func<ContentElement, string> _listItem { get; set; }
+        private Func<ImageElement, string> _image { get; set; }
 
         public Func<ContentElement, string> Paragraph() => _paragraph;
         public Func<ActionElement, string> Link() => _link;
@@ -34,7 +35,8 @@ namespace MailBodyPack
         public Func<ContentElement, string> UnorderedList() => _unorderedList;
         public Func<ContentElement, string> OrderedList() => _orderedList;
         public Func<ContentElement, string> ListItem() => _listItem;
-
+        public Func<ImageElement, string> Image() => _image;
+        
         public MailBodyTemplate Paragraph(Func<ContentElement, string> newFunc)
         {
             _paragraph = newFunc;
@@ -112,7 +114,13 @@ namespace MailBodyPack
             _listItem = newFunc;
             return this;
         }
-        
+
+        public MailBodyTemplate Image(Func<ImageElement, string> newFunc)
+        {
+            _image = newFunc;
+            return this;
+        }
+
         /// <summary>
         /// Get the default template for body.
         /// </summary>
@@ -122,6 +130,7 @@ namespace MailBodyPack
             return new MailBodyTemplate()
                 .Paragraph(m => $"<p style='font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;'>{m.Content}</p>")
                 .Link(m => $"<a href='{m.Link}'>{m.Content}</a>")
+                .Image(m => $"<img src='{m.Src}' alt='{m.Content}' style='margin:0;Margin-bottom:15px;height:auto !important;max-width:100% !important;width:auto !important;' />")
                 .Title(m => $"<h1>{m.Content}</h1>")
                 .SubTitle(m => $"<h2>{m.Content}</h2>")
                 .Text(m => $"{m.Content}")

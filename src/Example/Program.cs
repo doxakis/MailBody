@@ -21,6 +21,7 @@ namespace Example
             File.WriteAllText(@"Output/CustomThemeAndRawHtml.html", GenerateCustomThemeAndRawHtml()); 
             File.WriteAllText(@"Output/AnotherWay.html", GenerateAnotherWay());
             File.WriteAllText(@"Output/OverrideDefaultTemplate.html", GenerateOverrideDefaultTemplate());
+            File.WriteAllText(@"Output/WithImage.html", GenerateWithImages());
         }
 
         public static string GenerateEmailAddressConfirmation()
@@ -651,6 +652,20 @@ namespace Example
                 .Paragraph("— [Insert company name here]")
                 .ToString();
             
+            return body;
+        }
+
+        public static string GenerateWithImages()
+        {
+            var body = MailBody
+                .CreateBody()
+                .Image("https://placehold.it/540x70/ffffff/e8117f?text=My+logo", "My company name")
+                .Paragraph("Please confirm your email address by clicking the link below.")
+                .Paragraph("We may need to send you critical information about our service and it is important that we have an accurate email address.")
+                .Button("https://example.com/", "Confirm Email Address")
+                .Paragraph("— [Insert company name here]")
+                .ToString();
+
             return body;
         }
     }
