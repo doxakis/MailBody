@@ -19,7 +19,6 @@ env:
 os:
   - linux
 script:
-  - cd src/Tests
   - dotnet restore
   - dotnet build
   - dotnet test
