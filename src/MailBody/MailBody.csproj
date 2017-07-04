@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Description>Easier transactional mail creation (.net)</Description>
@@ -21,7 +21,7 @@
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.4' OR '$(TargetFramework)' == 'netstandard1.6' ">
     <PackageReference Include="Microsoft.CSharp" Version="4.0.1" />
     <PackageReference Include="System.Dynamic.Runtime" Version="4.0.11" />
   </ItemGroup>
@@ -29,6 +29,7 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Dynamic.Runtime" />
   </ItemGroup>
 
 </Project>
