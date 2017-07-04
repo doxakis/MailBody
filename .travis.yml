@@ -11,5 +11,6 @@ env:
     - DOTNET_CLI_TELEMETRY_OPTOUT: 1
 script:
   - dotnet restore
-  - dotnet build
+  - dotnet build -f netstandard1.4 src/MailBody/
+  - dotnet build -f netcoreapp1.0 src/Tests/
   - dotnet test src/Tests/Tests.csproj
