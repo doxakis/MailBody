@@ -11,7 +11,8 @@ addons:
     - libunwind8
     - zlib1g
 mono: none
-dotnet: 1.0.0-preview2-003121
+dotnet: 1.0.1
+solution: MailBody.sln
 env:
   global:
     - DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
@@ -21,4 +22,4 @@ os:
 script:
   - dotnet restore
   - dotnet build
-  - dotnet test
+  - dotnet test src/Tests/Tests.csproj
