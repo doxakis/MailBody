@@ -1,4 +1,4 @@
-# MailBody [![Build Status](https://travis-ci.org/doxakis/MailBody.svg?branch=master)](https://travis-ci.org/doxakis/MailBody) [![NuGet Status](https://badge.fury.io/nu/mailbody.svg)](https://www.nuget.org/packages/MailBody)
+à# MailBody [![Build Status](https://travis-ci.org/doxakis/MailBody.svg?branch=master)](https://travis-ci.org/doxakis/MailBody) [![NuGet Status](https://badge.fury.io/nu/mailbody.svg)](https://www.nuget.org/packages/MailBody)
 MailBody is a library for generating transactional email by using a fluent interface.
 
 The current mail template is based on https://github.com/leemunroe/responsive-html-email-template
@@ -6,7 +6,7 @@ The current mail template is based on https://github.com/leemunroe/responsive-ht
 
 # Supported framework
 - dotnet core 1.0
-- .net framework 4.5
+- .net framework 4.5 (c#, vb)
 
 # Install from Nuget
 To get the latest version:
@@ -17,6 +17,8 @@ Install-Package MailBody
 # Quick Examples
 
 ## Email Address Confirmation
+
+### C# syntax:
 ```
 var body = MailBody
     .CreateBody()
@@ -27,6 +29,15 @@ var body = MailBody
     .ToString();
 ```
 
+### Visual Basic syntax:
+```
+Dim body As String = MailBody.CreateBody() _
+    .Paragraph("Please confirm your email address by clicking the link below.") _
+	.Paragraph("We may need to send you critical information about our service and it is important that we have an accurate email address.") _
+	.Button("https://example.com/", "Confirm Email Address") _
+	.Paragraph("— [Insert company name here]") _
+	.ToString()
+```
 [Preview](https://rawgit.com/doxakis/MailBody/master/src/Example/Output/EmailAddressConfirmation.html)
 
 ## Password reset
