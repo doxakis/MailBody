@@ -14,6 +14,12 @@ To get the latest version:
 Install-Package MailBody
 ```
 
+# MailBody Editor
+If you want to create email with the MailBody library while having a live preview, you can use the [MailBody Editor](https://github.com/doxakis/MailBodyEditor)
+<p align="center">
+    <img alt="Preview" src="Preview.png" />
+</p>
+
 # Quick Examples
 
 ## Email Address Confirmation
