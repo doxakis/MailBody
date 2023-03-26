@@ -89,7 +89,8 @@ namespace MailBodyPack
 
                 var element = new ContentElement
                 {
-                    Content = block.ToString()
+                    Content = block.ToString(),
+                    Attributes = attributes
                 };
                 return _template.Paragraph()(element);
             });
@@ -103,7 +104,7 @@ namespace MailBodyPack
         /// <returns></returns>
         public MailBlockFluent Link(string link, dynamic attributes = null)
         {
-            return Link(link, link);
+            return Link(link, link, attributes);
         }
 
         /// <summary>
