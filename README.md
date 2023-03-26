@@ -1,4 +1,4 @@
-# MailBody [![Build Status](https://travis-ci.org/doxakis/MailBody.svg?branch=master)](https://travis-ci.org/doxakis/MailBody) [![NuGet Status](https://badge.fury.io/nu/mailbody.svg)](https://www.nuget.org/packages/MailBody)
+# MailBody [![NuGet Status](https://badge.fury.io/nu/mailbody.svg)](https://www.nuget.org/packages/MailBody)
 MailBody is a library for generating transactional email by using a fluent interface.
 
 The current mail template is based on https://github.com/leemunroe/responsive-html-email-template
