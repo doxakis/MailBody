@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Description>Easier transactional mail creation (.net)</Description>
     <AssemblyTitle>MailBody</AssemblyTitle>
-    <VersionPrefix>1.1.4</VersionPrefix>
+    <VersionPrefix>1.1.5</VersionPrefix>
     <TargetFrameworks>netstandard1.4;netstandard1.6;net40;net45;net46</TargetFrameworks>
     <AssemblyName>MailBody</AssemblyName>
     <PackageId>MailBody</PackageId>
