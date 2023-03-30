@@ -35,4 +35,12 @@
     <Reference Include="System.Dynamic.Runtime" />
   </ItemGroup>
 
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.4' ">
+    <DefineConstants>NETSTANDARD14</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.6' ">
+    <DefineConstants>NETSTANDARD16</DefineConstants>
+  </PropertyGroup>
+
 </Project>

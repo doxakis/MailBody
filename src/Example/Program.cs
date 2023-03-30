@@ -18,7 +18,7 @@ namespace Example
             File.WriteAllText(@"Output/Notification.html", GenerateNotification());
             File.WriteAllText(@"Output/Blocks.html", GenerateBlocks());
             File.WriteAllText(@"Output/Withfooter.html", GenerateWithfooter());
-            File.WriteAllText(@"Output/CustomThemeAndRawHtml.html", GenerateCustomThemeAndRawHtml()); 
+            File.WriteAllText(@"Output/CustomThemeAndRawHtml.html", GenerateCustomThemeAndRawHtml());
             File.WriteAllText(@"Output/AnotherWay.html", GenerateAnotherWay());
             File.WriteAllText(@"Output/OverrideDefaultTemplate.html", GenerateOverrideDefaultTemplate());
             File.WriteAllText(@"Output/WithImage.html", GenerateWithImages());
@@ -62,23 +62,23 @@ namespace Example
             template
                 .Paragraph(m =>
                     "<p style='" +
-                    (m.IsProperty(() => m.Attributes.color) ? $"color:{m.Attributes.color};" : string.Empty) +
-                    (m.IsProperty(() => m.Attributes.backgroundColor) ? $"background-color:{m.Attributes.backgroundColor};" : string.Empty) +
+                    (m.HasAttribute("color") ? $"color:{m.Attributes.color};" : string.Empty) +
+                    (m.HasAttribute("backgroundColor") ? $"background-color:{m.Attributes.backgroundColor};" : string.Empty) +
                     $"'>{m.Content}</p>")
                 .Body(m => "<html><body>" + m.Content + "<br />" + m.Footer + "</body></html>")
                 .Text(m =>
                     $"<span style='" +
-                    (m.IsProperty(() => m.Attributes.color) ? $"color:{m.Attributes.color};" : string.Empty) +
-                    (m.IsProperty(() => m.Attributes.backgroundColor) ? $"background-color:{m.Attributes.backgroundColor};" : string.Empty) +
-                    (m.IsProperty(() => m.Attributes.fontWeight) ? $"font-weight:{m.Attributes.fontWeight};" : string.Empty) +
+                    (m.HasAttribute("color") ? $"color:{m.Attributes.color};" : string.Empty) +
+                    (m.HasAttribute("backgroundColor") ? $"background-color:{m.Attributes.backgroundColor};" : string.Empty) +
+                    (m.HasAttribute("fontWeight") ? $"font-weight:{m.Attributes.fontWeight};" : string.Empty) +
                     $"'>{m.Content}</span>");
 
             var footer = MailBody
                 .CreateBlock()
-                .Text("Follow ", new { color = "red"})
+                .Text("Follow ", new { color = "red" })
                 .Link("http://twitter.com/example", "@Example")
                 .Text(" on Twitter.", new { color = "#009900", backgroundColor = "#CCCCCC", fontWeight = "bold" });
-            
+
             var body = MailBody
                 .CreateBody(template, footer)
                 .Paragraph("Please confirm your email address by clicking the link below.")
@@ -86,7 +86,7 @@ namespace Example
                 .Button("https://www.example.com/", "Confirm Email Address")
                 .Paragraph("— [Insert company name here]", new { color = "white", backgroundColor = "black" })
                 .ToString();
-            
+
             return body;
         }
 
@@ -96,7 +96,7 @@ namespace Example
 
             // Format product display.
             var items = products.Select(item => MailBody.CreateBlock().Text(item));
-            
+
             var body = MailBody
                 .CreateBody()
                 .Title("Confirmation of your order")
@@ -117,10 +117,10 @@ namespace Example
             var productStatus = "available";
             var productDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis nisl ut tellus egestas facilisis. Nulla eget erat dictum, facilisis libero sit amet, sollicitudin tortor. Morbi iaculis, urna eu tincidunt dapibus, sapien ex dictum nibh, non congue urna tellus vitae risus.";
             var components = new string[] { "Part A", "Part B" };
-            
+
             // Format product display.
             var items = components.Select(item => MailBody.CreateBlock().Text(item));
-            
+
             var body = MailBody
                 .CreateBody()
                 .Paragraph("Hello,")
@@ -138,15 +138,15 @@ namespace Example
 
             return body;
         }
-		
-		public static string GenerateBlocks()
+
+        public static string GenerateBlocks()
         {
             var componentsArray = new string[] { "Block A", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis nisl ut tellus egestas facilisis. Nulla eget erat dictum, facilisis libero sit amet, sollicitudin tortor. Morbi iaculis, urna eu tincidunt dapibus, sapien ex dictum nibh, non congue urna tellus vitae risus." };
-            var buttonsArray = new Tuple<string,string>[] { Tuple.Create<string,string>("http://www.google.com", "Button A"), Tuple.Create<string, string>("http://www.disney.com", "Button B") };
-            
+            var buttonsArray = new Tuple<string, string>[] { Tuple.Create<string, string>("http://www.google.com", "Button A"), Tuple.Create<string, string>("http://www.disney.com", "Button B") };
+
             var items = componentsArray.Select(item => MailBody.CreateBlock().Paragraph(item));
             var buttons = buttonsArray.Select(item => MailBody.CreateBlock().Button(item.Item1, item.Item2));
-            
+
             var body = MailBody
                 .CreateBody()
                 .Paragraph("Hello,")
@@ -651,7 +651,7 @@ namespace Example
                 .Button("https://example.com/", "Confirm Email Address")
                 .Paragraph("— [Insert company name here]")
                 .ToString();
-            
+
             return body;
         }
 
@@ -667,6 +667,20 @@ namespace Example
                 .ToString();
 
             return body;
+        }
+
+        public static MailBodyTemplate GetOnlyParagraphWithFontSizeStyleTemplate()
+        {
+            var template = MailBodyTemplate.GetDefaultTemplate()
+                .Paragraph(m =>
+                {
+                    string fontSize = null;
+                    var hasFontSize = m.TryGetAttribute<string>("fontSize", out fontSize);
+                    return $"<p{(hasFontSize ? $" style='font-size: {fontSize};'" : "")}>{m.Content}</p>";
+                })
+                .Body(m => m.Content);
+
+            return template;
         }
     }
 }
