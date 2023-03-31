@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Description>Easier transactional mail creation (.net)</Description>
     <AssemblyTitle>MailBody</AssemblyTitle>
-    <VersionPrefix>1.1.5</VersionPrefix>
+    <VersionPrefix>2.0.0</VersionPrefix>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>MailBody</AssemblyName>
     <PackageId>MailBody</PackageId>
