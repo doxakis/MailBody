@@ -147,19 +147,19 @@ public class Program
 
     public static string GenerateBlocks()
     {
-        var componentsArray = new string[]
+        var componentsArray = new[]
         {
             "Block A",
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis nisl ut tellus egestas facilisis. Nulla eget erat dictum, facilisis libero sit amet, sollicitudin tortor. Morbi iaculis, urna eu tincidunt dapibus, sapien ex dictum nibh, non congue urna tellus vitae risus."
         };
-        var buttonsArray = new Tuple<string, string>[]
+        var buttonsArray = new[]
         {
-            Tuple.Create<string, string>("http://www.google.com", "Button A"),
-            Tuple.Create<string, string>("http://www.disney.com", "Button B")
+            ("http://www.google.com", "Button A"),
+            ("http://www.disney.com", "Button B")
         };
 
         var items = componentsArray.Select(item => MailBody.CreateBlock().Paragraph(item));
-        var buttons = buttonsArray.Select(item => MailBody.CreateBlock().Button(item.Item1, item.Item2));
+        var buttons = buttonsArray.Select((item) => MailBody.CreateBlock().Button(item.Item1, item.Item2));
 
         var body = MailBody
             .CreateBody()
