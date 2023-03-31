@@ -2,221 +2,220 @@
 using Xunit;
 using MailBodyPack;
 
-namespace Tests
+namespace Tests;
+
+public class MailBodyTest
 {
-    public class MailBodyTest
+    [Fact]
+    public void Simple()
     {
-        [Fact]
-        public void Simple()
+        var body = MailBody
+            .CreateBody()
+            .Paragraph("Please confirm your email address by clicking the link below.")
+            .Paragraph("We may need to send you critical information about our service and it is important that we have an accurate email address.")
+            .Button("https://example.com/", "Confirm Email Address")
+            .Paragraph("— [Insert company name here]")
+            .ToString();
+
+        Assert.NotEmpty(body);
+    }
+
+    [Fact]
+    public void WithFooter()
+    {
+        var footer = MailBody
+            .CreateBlock()
+            .Text("Follow ")
+            .Link("http://twitter.com/example", "@Example")
+            .Text(" on Twitter.");
+
+        var body = MailBody
+            .CreateBody(footer)
+            .Paragraph("Please confirm your email address by clicking the link below.")
+            .Paragraph("We may need to send you critical information about our service and it is important that we have an accurate email address.")
+            .Button("https://www.example.com/", "Confirm Email Address")
+            .Paragraph("— [Insert company name here]")
+            .ToString();
+
+        Assert.NotEmpty(body);
+    }
+
+    [Fact]
+    public void CustomThemeAndRawHtml()
+    {
+        var template = MailBodyTemplate.GetDefaultTemplate()
+            .Paragraph(m => $"<p style='color:blue;'>{m.Content}</p>")
+            .Body(m => "<html><body>" + m.Content + "<br />" + m.Footer + "</body></html>");
+
+        var footer = MailBody
+            .CreateBlock()
+            .Text("Follow ")
+            .Link("http://twitter.com/example", "@Example")
+            .Text(" on Twitter.");
+
+        var body = MailBody
+            .CreateBody(template, footer)
+            .Paragraph("Please confirm your email address by clicking the link below.")
+            .Raw("<p>We may need to send you <strong>critical information</strong> about our service and it is important that we have an accurate email address.</p>")
+            .Button("https://www.example.com/", "Confirm Email Address")
+            .Paragraph("— [Insert company name here]")
+            .ToString();
+
+        Assert.NotEmpty(body);
+    }
+
+    [Fact]
+    public void RunExampleProject()
+    {
+        Example.Program.Main(new string[0]);
+    }
+
+    public class CssAttributes
+    {
+        public string FontSize { get; set; }
+    }
+
+    [Theory]
+    [InlineData("fontSize", true)]
+    [InlineData("color", false)]
+    public void HasAttribute_AndAnonymousObject_AndVaryPropertyName(string propertyName, bool expected)
+    {
+        var element = new ContentElement
         {
-            var body = MailBody
-                .CreateBody()
-                .Paragraph("Please confirm your email address by clicking the link below.")
-                .Paragraph("We may need to send you critical information about our service and it is important that we have an accurate email address.")
-                .Button("https://example.com/", "Confirm Email Address")
-                .Paragraph("— [Insert company name here]")
-                .ToString();
+            Attributes = new { fontSize = "12px" }
+        };
 
-            Assert.NotEmpty(body);
-        }
+        var actual = element.HasAttribute(propertyName);
 
-        [Fact]
-        public void WithFooter()
+        Assert.Equal(expected, actual);
+    }
+
+    [Theory]
+    [InlineData("fontSize", true)]
+    [InlineData("color", false)]
+    public void HasAttribute_AndDictionary_AndVaryPropertyName(string propertyName, bool expected)
+    {
+        var element = new ContentElement
         {
-            var footer = MailBody
-                .CreateBlock()
-                .Text("Follow ")
-                .Link("http://twitter.com/example", "@Example")
-                .Text(" on Twitter.");
+            Attributes = new Dictionary<string, string> { ["fontSize"] = "12px" }
+        };
 
-            var body = MailBody
-                .CreateBody(footer)
-                .Paragraph("Please confirm your email address by clicking the link below.")
-                .Paragraph("We may need to send you critical information about our service and it is important that we have an accurate email address.")
-                .Button("https://www.example.com/", "Confirm Email Address")
-                .Paragraph("— [Insert company name here]")
-                .ToString();
+        var actual = element.HasAttribute(propertyName);
 
-            Assert.NotEmpty(body);
-        }
+        Assert.Equal(expected, actual);
+    }
 
-        [Fact]
-        public void CustomThemeAndRawHtml()
+    [Theory]
+    [InlineData("FontSize", true)]
+    [InlineData("color", false)]
+    public void HasAttribute_AndClass_AndVaryPropertyName(string propertyName, bool expected)
+    {
+        var element = new ContentElement
         {
-            var template = MailBodyTemplate.GetDefaultTemplate()
-                .Paragraph(m => $"<p style='color:blue;'>{m.Content}</p>")
-                .Body(m => "<html><body>" + m.Content + "<br />" + m.Footer + "</body></html>");
+            Attributes = new CssAttributes { FontSize = "12px" }
+        };
 
-            var footer = MailBody
-                .CreateBlock()
-                .Text("Follow ")
-                .Link("http://twitter.com/example", "@Example")
-                .Text(" on Twitter.");
+        var actual = element.HasAttribute(propertyName);
 
-            var body = MailBody
-                .CreateBody(template, footer)
-                .Paragraph("Please confirm your email address by clicking the link below.")
-                .Raw("<p>We may need to send you <strong>critical information</strong> about our service and it is important that we have an accurate email address.</p>")
-                .Button("https://www.example.com/", "Confirm Email Address")
-                .Paragraph("— [Insert company name here]")
-                .ToString();
+        Assert.Equal(expected, actual);
+    }
 
-            Assert.NotEmpty(body);
-        }
-
-        [Fact]
-        public void RunExampleProject()
+    [Fact]
+    public void TryGetAttribute_AndAnonymousObject_AndPropertyExists()
+    {
+        var element = new ContentElement
         {
-            Example.Program.Main(new string[0]);
-        }
+            Attributes = new { fontSize = "12px" }
+        };
 
-        public class CssAttributes
+        var actual = element.TryGetAttribute("fontSize", out string size);
+
+        Assert.True(actual);
+        Assert.Equal("12px", size);
+    }
+
+    [Fact]
+    public void TryGetAttribute_AndAnonymousObject_AndPropertyIsMissing()
+    {
+        var element = new ContentElement
         {
-            public string FontSize { get; set; }
-        }
+            Attributes = new { fontSize = "12px" }
+        };
 
-        [Theory]
-        [InlineData("fontSize", true)]
-        [InlineData("color", false)]
-        public void HasAttribute_AndAnonymousObject_AndVaryPropertyName(string propertyName, bool expected)
+        var actual = element.TryGetAttribute("color", out string color);
+
+        Assert.False(actual);
+        Assert.Null(color);
+    }
+
+    [Fact]
+    public void TryGetAttribute_AndDictionary_AndPropertyExists()
+    {
+        var element = new ContentElement
         {
-            var element = new ContentElement
-            {
-                Attributes = new { fontSize = "12px" }
-            };
+            Attributes = new Dictionary<string, string> { ["fontSize"] = "12px" }
+        };
 
-            var actual = element.HasAttribute(propertyName);
+        var actual = element.TryGetAttribute("fontSize", out string size);
 
-            Assert.Equal(expected, actual);
-        }
+        Assert.True(actual);
+        Assert.Equal("12px", size);
+    }
 
-        [Theory]
-        [InlineData("fontSize", true)]
-        [InlineData("color", false)]
-        public void HasAttribute_AndDictionary_AndVaryPropertyName(string propertyName, bool expected)
+    [Fact]
+    public void TryGetAttribute_AndDictionary_AndPropertyIsMissing()
+    {
+        var element = new ContentElement
         {
-            var element = new ContentElement
-            {
-                Attributes = new Dictionary<string, string> { ["fontSize"] = "12px" }
-            };
+            Attributes = new Dictionary<string, string> { ["fontSize"] = "12px" }
+        };
 
-            var actual = element.HasAttribute(propertyName);
+        var actual = element.TryGetAttribute("color", out string color);
 
-            Assert.Equal(expected, actual);
-        }
+        Assert.False(actual);
+        Assert.Null(color);
+    }
 
-        [Theory]
-        [InlineData("FontSize", true)]
-        [InlineData("color", false)]
-        public void HasAttribute_AndClass_AndVaryPropertyName(string propertyName, bool expected)
+    [Fact]
+    public void TryGetAttribute_AndClass_AndPropertyExists()
+    {
+        var element = new ContentElement
         {
-            var element = new ContentElement
-            {
-                Attributes = new CssAttributes { FontSize = "12px" }
-            };
+            Attributes = new CssAttributes { FontSize = "12px" }
+        };
 
-            var actual = element.HasAttribute(propertyName);
+        var actual = element.TryGetAttribute("FontSize", out string size);
 
-            Assert.Equal(expected, actual);
-        }
+        Assert.True(actual);
+        Assert.Equal("12px", size);
+    }
 
-        [Fact]
-        public void TryGetAttribute_AndAnonymousObject_AndPropertyExists()
+    [Fact]
+    public void TryGetAttribute_AndClass_AndPropertyIsMissing()
+    {
+        var element = new ContentElement
         {
-            var element = new ContentElement
-            {
-                Attributes = new { fontSize = "12px" }
-            };
+            Attributes = new CssAttributes { FontSize = "12px" }
+        };
 
-            var actual = element.TryGetAttribute("fontSize", out string size);
+        var actual = element.TryGetAttribute("color", out string color);
 
-            Assert.True(actual);
-            Assert.Equal("12px", size);
-        }
+        Assert.False(actual);
+        Assert.Null(color);
+    }
 
-        [Fact]
-        public void TryGetAttribute_AndAnonymousObject_AndPropertyIsMissing()
-        {
-            var element = new ContentElement
-            {
-                Attributes = new { fontSize = "12px" }
-            };
+    [Fact]
+    public void DifferentAssemblyDynamicAttributesTest()
+    {
+        const string text = "test";
+        const string size = "12px";
+        var template = Example.Program.GetOnlyParagraphWithFontSizeStyleTemplate();
 
-            var actual = element.TryGetAttribute("color", out string color);
+        var html = MailBody
+            .CreateBody(template)
+            .Paragraph(text, new { fontSize = size })
+            .GenerateHtml();
 
-            Assert.False(actual);
-            Assert.Null(color);
-        }
-
-        [Fact]
-        public void TryGetAttribute_AndDictionary_AndPropertyExists()
-        {
-            var element = new ContentElement
-            {
-                Attributes = new Dictionary<string, string> { ["fontSize"] = "12px" }
-            };
-
-            var actual = element.TryGetAttribute("fontSize", out string size);
-
-            Assert.True(actual);
-            Assert.Equal("12px", size);
-        }
-
-        [Fact]
-        public void TryGetAttribute_AndDictionary_AndPropertyIsMissing()
-        {
-            var element = new ContentElement
-            {
-                Attributes = new Dictionary<string, string> { ["fontSize"] = "12px" }
-            };
-
-            var actual = element.TryGetAttribute("color", out string color);
-
-            Assert.False(actual);
-            Assert.Null(color);
-        }
-
-        [Fact]
-        public void TryGetAttribute_AndClass_AndPropertyExists()
-        {
-            var element = new ContentElement
-            {
-                Attributes = new CssAttributes { FontSize = "12px" }
-            };
-
-            var actual = element.TryGetAttribute("FontSize", out string size);
-
-            Assert.True(actual);
-            Assert.Equal("12px", size);
-        }
-
-        [Fact]
-        public void TryGetAttribute_AndClass_AndPropertyIsMissing()
-        {
-            var element = new ContentElement
-            {
-                Attributes = new CssAttributes { FontSize = "12px" }
-            };
-
-            var actual = element.TryGetAttribute("color", out string color);
-
-            Assert.False(actual);
-            Assert.Null(color);
-        }
-
-        [Fact]
-        public void DifferentAssemblyDynamicAttributesTest()
-        {
-            const string text = "test";
-            const string size = "12px";
-            var template = Example.Program.GetOnlyParagraphWithFontSizeStyleTemplate();
-
-            var html = MailBody
-                .CreateBody(template)
-                .Paragraph(text, new { fontSize = size })
-                .GenerateHtml();
-
-            Assert.Equal($"<p style='font-size: {size};'>{text}</p>", html);
-        }
+        Assert.Equal($"<p style='font-size: {size};'>{text}</p>", html);
     }
 }

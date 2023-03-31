@@ -1,7 +1,6 @@
-﻿namespace MailBodyPack
+﻿namespace MailBodyPack;
+
+public class ImageElement : ContentElement
 {
-    public class ImageElement : ContentElement
-    {
-        public string Src { get; set; }
-    }
+    public string Src { get; set; }
 }

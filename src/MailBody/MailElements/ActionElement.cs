@@ -1,7 +1,6 @@
-﻿namespace MailBodyPack
+﻿namespace MailBodyPack;
+
+public class ActionElement : ContentElement
 {
-    public class ActionElement : ContentElement
-    {
-        public string Link { get; set; }
-    }
+    public string Link { get; set; }
 }
