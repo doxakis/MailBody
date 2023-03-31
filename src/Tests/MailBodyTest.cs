@@ -12,7 +12,8 @@ public class MailBodyTest
         var body = MailBody
             .CreateBody()
             .Paragraph("Please confirm your email address by clicking the link below.")
-            .Paragraph("We may need to send you critical information about our service and it is important that we have an accurate email address.")
+            .Paragraph(
+                "We may need to send you critical information about our service and it is important that we have an accurate email address.")
             .Button("https://example.com/", "Confirm Email Address")
             .Paragraph("— [Insert company name here]")
             .ToString();
@@ -32,7 +33,8 @@ public class MailBodyTest
         var body = MailBody
             .CreateBody(footer)
             .Paragraph("Please confirm your email address by clicking the link below.")
-            .Paragraph("We may need to send you critical information about our service and it is important that we have an accurate email address.")
+            .Paragraph(
+                "We may need to send you critical information about our service and it is important that we have an accurate email address.")
             .Button("https://www.example.com/", "Confirm Email Address")
             .Paragraph("— [Insert company name here]")
             .ToString();
@@ -56,7 +58,8 @@ public class MailBodyTest
         var body = MailBody
             .CreateBody(template, footer)
             .Paragraph("Please confirm your email address by clicking the link below.")
-            .Raw("<p>We may need to send you <strong>critical information</strong> about our service and it is important that we have an accurate email address.</p>")
+            .Raw(
+                "<p>We may need to send you <strong>critical information</strong> about our service and it is important that we have an accurate email address.</p>")
             .Button("https://www.example.com/", "Confirm Email Address")
             .Paragraph("— [Insert company name here]")
             .ToString();
@@ -82,7 +85,7 @@ public class MailBodyTest
     {
         var element = new ContentElement
         {
-            Attributes = new { fontSize = "12px" }
+            Attributes = new {fontSize = "12px"}
         };
 
         var actual = element.HasAttribute(propertyName);
@@ -97,7 +100,7 @@ public class MailBodyTest
     {
         var element = new ContentElement
         {
-            Attributes = new Dictionary<string, string> { ["fontSize"] = "12px" }
+            Attributes = new Dictionary<string, string> {["fontSize"] = "12px"}
         };
 
         var actual = element.HasAttribute(propertyName);
@@ -112,7 +115,7 @@ public class MailBodyTest
     {
         var element = new ContentElement
         {
-            Attributes = new CssAttributes { FontSize = "12px" }
+            Attributes = new CssAttributes {FontSize = "12px"}
         };
 
         var actual = element.HasAttribute(propertyName);
@@ -125,7 +128,7 @@ public class MailBodyTest
     {
         var element = new ContentElement
         {
-            Attributes = new { fontSize = "12px" }
+            Attributes = new {fontSize = "12px"}
         };
 
         var actual = element.TryGetAttribute("fontSize", out string size);
@@ -139,7 +142,7 @@ public class MailBodyTest
     {
         var element = new ContentElement
         {
-            Attributes = new { fontSize = "12px" }
+            Attributes = new {fontSize = "12px"}
         };
 
         var actual = element.TryGetAttribute("color", out string color);
@@ -153,7 +156,7 @@ public class MailBodyTest
     {
         var element = new ContentElement
         {
-            Attributes = new Dictionary<string, string> { ["fontSize"] = "12px" }
+            Attributes = new Dictionary<string, string> {["fontSize"] = "12px"}
         };
 
         var actual = element.TryGetAttribute("fontSize", out string size);
@@ -167,7 +170,7 @@ public class MailBodyTest
     {
         var element = new ContentElement
         {
-            Attributes = new Dictionary<string, string> { ["fontSize"] = "12px" }
+            Attributes = new Dictionary<string, string> {["fontSize"] = "12px"}
         };
 
         var actual = element.TryGetAttribute("color", out string color);
@@ -181,7 +184,7 @@ public class MailBodyTest
     {
         var element = new ContentElement
         {
-            Attributes = new CssAttributes { FontSize = "12px" }
+            Attributes = new CssAttributes {FontSize = "12px"}
         };
 
         var actual = element.TryGetAttribute("FontSize", out string size);
@@ -195,7 +198,7 @@ public class MailBodyTest
     {
         var element = new ContentElement
         {
-            Attributes = new CssAttributes { FontSize = "12px" }
+            Attributes = new CssAttributes {FontSize = "12px"}
         };
 
         var actual = element.TryGetAttribute("color", out string color);
@@ -213,7 +216,7 @@ public class MailBodyTest
 
         var html = MailBody
             .CreateBody(template)
-            .Paragraph(text, new { fontSize = size })
+            .Paragraph(text, new {fontSize = size})
             .GenerateHtml();
 
         Assert.Equal($"<p style='font-size: {size};'>{text}</p>", html);

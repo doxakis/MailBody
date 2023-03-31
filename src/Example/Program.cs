@@ -7,206 +7,225 @@ namespace Example;
 
 public class Program
 {
-  public static void Main(string[] args)
-  {
-    Directory.CreateDirectory("Output");
-    File.WriteAllText(@"Output/EmailAddressConfirmation.html", GenerateEmailAddressConfirmation());
-    File.WriteAllText(@"Output/PasswordReset.html", GeneratePasswordReset());
-    File.WriteAllText(@"Output/OrderConfirmation.html", GenerateOrderConfirmation());
-    File.WriteAllText(@"Output/Notification.html", GenerateNotification());
-    File.WriteAllText(@"Output/Blocks.html", GenerateBlocks());
-    File.WriteAllText(@"Output/Withfooter.html", GenerateWithfooter());
-    File.WriteAllText(@"Output/CustomThemeAndRawHtml.html", GenerateCustomThemeAndRawHtml());
-    File.WriteAllText(@"Output/AnotherWay.html", GenerateAnotherWay());
-    File.WriteAllText(@"Output/OverrideDefaultTemplate.html", GenerateOverrideDefaultTemplate());
-    File.WriteAllText(@"Output/WithImage.html", GenerateWithImages());
-  }
+    public static void Main(string[] args)
+    {
+        Directory.CreateDirectory("Output");
+        File.WriteAllText(@"Output/EmailAddressConfirmation.html", GenerateEmailAddressConfirmation());
+        File.WriteAllText(@"Output/PasswordReset.html", GeneratePasswordReset());
+        File.WriteAllText(@"Output/OrderConfirmation.html", GenerateOrderConfirmation());
+        File.WriteAllText(@"Output/Notification.html", GenerateNotification());
+        File.WriteAllText(@"Output/Blocks.html", GenerateBlocks());
+        File.WriteAllText(@"Output/Withfooter.html", GenerateWithfooter());
+        File.WriteAllText(@"Output/CustomThemeAndRawHtml.html", GenerateCustomThemeAndRawHtml());
+        File.WriteAllText(@"Output/AnotherWay.html", GenerateAnotherWay());
+        File.WriteAllText(@"Output/OverrideDefaultTemplate.html", GenerateOverrideDefaultTemplate());
+        File.WriteAllText(@"Output/WithImage.html", GenerateWithImages());
+    }
 
-  public static string GenerateEmailAddressConfirmation()
-  {
-    var body = MailBody
-      .CreateBody()
-      .Paragraph("Please confirm your email address by clicking the link below.")
-      .Paragraph("We may need to send you critical information about our service and it is important that we have an accurate email address.")
-      .Button("https://example.com/", "Confirm Email Address")
-      .Paragraph("— [Insert company name here]")
-      .ToString();
+    public static string GenerateEmailAddressConfirmation()
+    {
+        var body = MailBody
+            .CreateBody()
+            .Paragraph("Please confirm your email address by clicking the link below.")
+            .Paragraph(
+                "We may need to send you critical information about our service and it is important that we have an accurate email address.")
+            .Button("https://example.com/", "Confirm Email Address")
+            .Paragraph("— [Insert company name here]")
+            .ToString();
 
-    return body;
-  }
+        return body;
+    }
 
-  public static string GenerateWithfooter()
-  {
-    var footer = MailBody
-      .CreateBlock()
-      .Text("Follow ")
-      .Link("http://twitter.com/example", "@Example")
-      .Text(" on Twitter.");
+    public static string GenerateWithfooter()
+    {
+        var footer = MailBody
+            .CreateBlock()
+            .Text("Follow ")
+            .Link("http://twitter.com/example", "@Example")
+            .Text(" on Twitter.");
 
-    var body = MailBody
-      .CreateBody(footer)
-      .Paragraph("Please confirm your email address by clicking the link below.")
-      .Paragraph("We may need to send you critical information about our service and it is important that we have an accurate email address.")
-      .Button("https://www.example.com/", "Confirm Email Address")
-      .Paragraph("— [Insert company name here]")
-      .ToString();
+        var body = MailBody
+            .CreateBody(footer)
+            .Paragraph("Please confirm your email address by clicking the link below.")
+            .Paragraph(
+                "We may need to send you critical information about our service and it is important that we have an accurate email address.")
+            .Button("https://www.example.com/", "Confirm Email Address")
+            .Paragraph("— [Insert company name here]")
+            .ToString();
 
-    return body;
-  }
+        return body;
+    }
 
-  public static string GenerateCustomThemeAndRawHtml()
-  {
-    var template = MailBodyTemplate.GetDefaultTemplate();
-    template
-      .Paragraph(m =>
-        "<p style='" +
-        (m.HasAttribute("color") ? $"color:{m.Attributes.color};" : string.Empty) +
-        (m.HasAttribute("backgroundColor") ? $"background-color:{m.Attributes.backgroundColor};" : string.Empty) +
-        $"'>{m.Content}</p>")
-      .Body(m => "<html><body>" + m.Content + "<br />" + m.Footer + "</body></html>")
-      .Text(m =>
-        $"<span style='" +
-        (m.HasAttribute("color") ? $"color:{m.Attributes.color};" : string.Empty) +
-        (m.HasAttribute("backgroundColor") ? $"background-color:{m.Attributes.backgroundColor};" : string.Empty) +
-        (m.HasAttribute("fontWeight") ? $"font-weight:{m.Attributes.fontWeight};" : string.Empty) +
-        $"'>{m.Content}</span>");
+    public static string GenerateCustomThemeAndRawHtml()
+    {
+        var template = MailBodyTemplate.GetDefaultTemplate();
+        template
+            .Paragraph(m =>
+                "<p style='" +
+                (m.HasAttribute("color") ? $"color:{m.Attributes.color};" : string.Empty) +
+                (m.HasAttribute("backgroundColor")
+                    ? $"background-color:{m.Attributes.backgroundColor};"
+                    : string.Empty) +
+                $"'>{m.Content}</p>")
+            .Body(m => "<html><body>" + m.Content + "<br />" + m.Footer + "</body></html>")
+            .Text(m =>
+                $"<span style='" +
+                (m.HasAttribute("color") ? $"color:{m.Attributes.color};" : string.Empty) +
+                (m.HasAttribute("backgroundColor")
+                    ? $"background-color:{m.Attributes.backgroundColor};"
+                    : string.Empty) +
+                (m.HasAttribute("fontWeight") ? $"font-weight:{m.Attributes.fontWeight};" : string.Empty) +
+                $"'>{m.Content}</span>");
 
-    var footer = MailBody
-      .CreateBlock()
-      .Text("Follow ", new { color = "red" })
-      .Link("http://twitter.com/example", "@Example")
-      .Text(" on Twitter.", new { color = "#009900", backgroundColor = "#CCCCCC", fontWeight = "bold" });
+        var footer = MailBody
+            .CreateBlock()
+            .Text("Follow ", new {color = "red"})
+            .Link("http://twitter.com/example", "@Example")
+            .Text(" on Twitter.", new {color = "#009900", backgroundColor = "#CCCCCC", fontWeight = "bold"});
 
-    var body = MailBody
-      .CreateBody(template, footer)
-      .Paragraph("Please confirm your email address by clicking the link below.")
-      .Raw("<p>We may need to send you <strong>critical information</strong> about our service and it is important that we have an accurate email address.</p>")
-      .Button("https://www.example.com/", "Confirm Email Address")
-      .Paragraph("— [Insert company name here]", new { color = "white", backgroundColor = "black" })
-      .ToString();
+        var body = MailBody
+            .CreateBody(template, footer)
+            .Paragraph("Please confirm your email address by clicking the link below.")
+            .Raw(
+                "<p>We may need to send you <strong>critical information</strong> about our service and it is important that we have an accurate email address.</p>")
+            .Button("https://www.example.com/", "Confirm Email Address")
+            .Paragraph("— [Insert company name here]", new {color = "white", backgroundColor = "black"})
+            .ToString();
 
-    return body;
-  }
+        return body;
+    }
 
-  public static string GenerateOrderConfirmation()
-  {
-    var products = new string[] { "1 x Product A", "2 x Product B", "3 x Product C" };
+    public static string GenerateOrderConfirmation()
+    {
+        var products = new string[] {"1 x Product A", "2 x Product B", "3 x Product C"};
 
-    // Format product display.
-    var items = products.Select(item => MailBody.CreateBlock().Text(item));
+        // Format product display.
+        var items = products.Select(item => MailBody.CreateBlock().Text(item));
 
-    var body = MailBody
-      .CreateBody()
-      .Title("Confirmation of your order")
-      .Paragraph("Hello,")
-      .Paragraph("We confirm having received your order.")
-      .Paragraph("Here is the list of ordered items:")
-      .UnorderedList(items)
-      .Paragraph("Thank you for ordering from us!")
-      .Paragraph("— [Insert company name here]")
-      .ToString();
+        var body = MailBody
+            .CreateBody()
+            .Title("Confirmation of your order")
+            .Paragraph("Hello,")
+            .Paragraph("We confirm having received your order.")
+            .Paragraph("Here is the list of ordered items:")
+            .UnorderedList(items)
+            .Paragraph("Thank you for ordering from us!")
+            .Paragraph("— [Insert company name here]")
+            .ToString();
 
-    return body;
-  }
+        return body;
+    }
 
-  public static string GenerateNotification()
-  {
-    var productName = "ABC";
-    var productStatus = "available";
-    var productDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis nisl ut tellus egestas facilisis. Nulla eget erat dictum, facilisis libero sit amet, sollicitudin tortor. Morbi iaculis, urna eu tincidunt dapibus, sapien ex dictum nibh, non congue urna tellus vitae risus.";
-    var components = new string[] { "Part A", "Part B" };
+    public static string GenerateNotification()
+    {
+        var productName = "ABC";
+        var productStatus = "available";
+        var productDescription =
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis nisl ut tellus egestas facilisis. Nulla eget erat dictum, facilisis libero sit amet, sollicitudin tortor. Morbi iaculis, urna eu tincidunt dapibus, sapien ex dictum nibh, non congue urna tellus vitae risus.";
+        var components = new string[] {"Part A", "Part B"};
 
-    // Format product display.
-    var items = components.Select(item => MailBody.CreateBlock().Text(item));
+        // Format product display.
+        var items = components.Select(item => MailBody.CreateBlock().Text(item));
 
-    var body = MailBody
-      .CreateBody()
-      .Paragraph("Hello,")
-      .Paragraph("The product " + productName + " is now " + productStatus + ".")
-      .SubTitle("Here is the product summary:")
-      .Paragraph(MailBody.CreateBlock()
-        .StrongText("Product name: ").Text(productName))
-      .Paragraph(MailBody.CreateBlock()
-        .StrongText("Description: ").Text(productDescription))
-      .Paragraph(MailBody.CreateBlock()
-        .StrongText("Components:"))
-      .UnorderedList(items)
-      .Paragraph("— [Insert company name here]")
-      .ToString();
+        var body = MailBody
+            .CreateBody()
+            .Paragraph("Hello,")
+            .Paragraph("The product " + productName + " is now " + productStatus + ".")
+            .SubTitle("Here is the product summary:")
+            .Paragraph(MailBody.CreateBlock()
+                .StrongText("Product name: ").Text(productName))
+            .Paragraph(MailBody.CreateBlock()
+                .StrongText("Description: ").Text(productDescription))
+            .Paragraph(MailBody.CreateBlock()
+                .StrongText("Components:"))
+            .UnorderedList(items)
+            .Paragraph("— [Insert company name here]")
+            .ToString();
 
-    return body;
-  }
+        return body;
+    }
 
-  public static string GenerateBlocks()
-  {
-    var componentsArray = new string[] { "Block A", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis nisl ut tellus egestas facilisis. Nulla eget erat dictum, facilisis libero sit amet, sollicitudin tortor. Morbi iaculis, urna eu tincidunt dapibus, sapien ex dictum nibh, non congue urna tellus vitae risus." };
-    var buttonsArray = new Tuple<string, string>[] { Tuple.Create<string, string>("http://www.google.com", "Button A"), Tuple.Create<string, string>("http://www.disney.com", "Button B") };
+    public static string GenerateBlocks()
+    {
+        var componentsArray = new string[]
+        {
+            "Block A",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sagittis nisl ut tellus egestas facilisis. Nulla eget erat dictum, facilisis libero sit amet, sollicitudin tortor. Morbi iaculis, urna eu tincidunt dapibus, sapien ex dictum nibh, non congue urna tellus vitae risus."
+        };
+        var buttonsArray = new Tuple<string, string>[]
+        {
+            Tuple.Create<string, string>("http://www.google.com", "Button A"),
+            Tuple.Create<string, string>("http://www.disney.com", "Button B")
+        };
 
-    var items = componentsArray.Select(item => MailBody.CreateBlock().Paragraph(item));
-    var buttons = buttonsArray.Select(item => MailBody.CreateBlock().Button(item.Item1, item.Item2));
+        var items = componentsArray.Select(item => MailBody.CreateBlock().Paragraph(item));
+        var buttons = buttonsArray.Select(item => MailBody.CreateBlock().Button(item.Item1, item.Item2));
 
-    var body = MailBody
-      .CreateBody()
-      .Paragraph("Hello,")
-      .SubTitle("Here is the blocks:")
-      .AddBlocksList(items)
-      .AddBlocksList(buttons)
-      .Paragraph("— [Insert company name here]")
-      .ToString();
+        var body = MailBody
+            .CreateBody()
+            .Paragraph("Hello,")
+            .SubTitle("Here is the blocks:")
+            .AddBlocksList(items)
+            .AddBlocksList(buttons)
+            .Paragraph("— [Insert company name here]")
+            .ToString();
 
-    return body;
-  }
+        return body;
+    }
 
-  public static string GeneratePasswordReset()
-  {
-    var appName = "My app";
+    public static string GeneratePasswordReset()
+    {
+        var appName = "My app";
 
-    var body = MailBody
-      .CreateBody()
-      .Paragraph("Hi,")
-      .Paragraph("You're receiving this email because someone requested a password reset for your user account at " + appName + ".")
-      .Button("https://www.example.com/", "Reset password")
-      .Paragraph("Thanks for using " + appName + "!")
-      .Paragraph("— [Insert company name here]")
-      .ToString();
+        var body = MailBody
+            .CreateBody()
+            .Paragraph("Hi,")
+            .Paragraph(
+                "You're receiving this email because someone requested a password reset for your user account at " +
+                appName + ".")
+            .Button("https://www.example.com/", "Reset password")
+            .Paragraph("Thanks for using " + appName + "!")
+            .Paragraph("— [Insert company name here]")
+            .ToString();
 
-    return body;
-  }
+        return body;
+    }
 
-  public static string GenerateAnotherWay()
-  {
-    var body = MailBody.CreateBody();
+    public static string GenerateAnotherWay()
+    {
+        var body = MailBody.CreateBody();
 
-    body.Paragraph("Hi,")
-      .Paragraph("First paragraph..");
+        body.Paragraph("Hi,")
+            .Paragraph("First paragraph..");
 
-    // Your code
-    body.Button("https://www.example.com/", "First button");
-    body.Paragraph("Another paragraph..");
+        // Your code
+        body.Button("https://www.example.com/", "First button");
+        body.Paragraph("Another paragraph..");
 
-    // Your code
-    body.Button("https://www.example.com/", "Second button")
-      .Paragraph("— [Insert company name here]");
+        // Your code
+        body.Button("https://www.example.com/", "Second button")
+            .Paragraph("— [Insert company name here]");
 
-    var htmlBody = body.ToString();
+        var htmlBody = body.ToString();
 
-    return htmlBody;
-  }
+        return htmlBody;
+    }
 
-  public static string GenerateOverrideDefaultTemplate()
-  {
-    var template = MailBodyTemplate.GetDefaultTemplate()
-      .Paragraph(m => $"<p style='font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;'>{m.Content}</p>")
-      .Link(m => $"<a href='{m.Link}'>{m.Content}</a>")
-      .Title(m => $"<h1>{m.Content}</h1>")
-      .SubTitle(m => $"<h2>{m.Content}</h2>")
-      .Text(m => $"{m.Content}")
-      .StrongText(m => $"<strong>{m.Content}</strong>")
-      .UnorderedList(m => $"<ul>{m.Content}</ul>")
-      .OrderedList(m => $"<ol>{m.Content}</ol>")
-      .ListItem(m => $"<li>{m.Content}</li>")
-      .LineBreak(m => $"</br>")
-      .Button(m => @"<table class='body-action' align='center' width='100%' cellpadding='0' cellspacing='0'>
+    public static string GenerateOverrideDefaultTemplate()
+    {
+        var template = MailBodyTemplate.GetDefaultTemplate()
+            .Paragraph(m =>
+                $"<p style='font-family: sans-serif; font-size: 14px; font-weight: normal; margin: 0; Margin-bottom: 15px;'>{m.Content}</p>")
+            .Link(m => $"<a href='{m.Link}'>{m.Content}</a>")
+            .Title(m => $"<h1>{m.Content}</h1>")
+            .SubTitle(m => $"<h2>{m.Content}</h2>")
+            .Text(m => $"{m.Content}")
+            .StrongText(m => $"<strong>{m.Content}</strong>")
+            .UnorderedList(m => $"<ul>{m.Content}</ul>")
+            .OrderedList(m => $"<ol>{m.Content}</ol>")
+            .ListItem(m => $"<li>{m.Content}</li>")
+            .LineBreak(m => $"</br>")
+            .Button(m => @"<table class='body-action' align='center' width='100%' cellpadding='0' cellspacing='0'>
                         <tr>
                           <td align='center'>
                             <table width='100%' border='0' cellspacing='0' cellpadding='0'>
@@ -215,7 +234,8 @@ public class Program
                                   <table border='0' cellspacing='0' cellpadding='0'>
                                     <tr>
                                       <td>
-                                        <a href='" + m.Link + @"' class='button button--' target='_blank'>" + m.Content + @"</a>
+                                        <a href='" + m.Link + @"' class='button button--' target='_blank'>" +
+                         m.Content + @"</a>
                                       </td>
                                     </tr>
                                   </table>
@@ -225,9 +245,9 @@ public class Program
                           </td>
                         </tr>
                       </table>")
-      .Block(m => m.Content)
-      .Body(m => // The template is based on: https://github.com/wildbit/postmark-templates
-        @"<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
+            .Block(m => m.Content)
+            .Body(m => // The template is based on: https://github.com/wildbit/postmark-templates
+                @"<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml'>
   <head>
     <meta name='viewport' content='width=device-width, initial-scale=1.0' />
@@ -642,41 +662,43 @@ public class Program
   <script type='text/javascript'>/* <![CDATA[ */(function(d,s,a,i,j,r,l,m,t){try{l=d.getElementsByTagName('a');t=d.createElement('textarea');for(i=0;l.length-i;i++){try{a=l[i].href;s=a.indexOf('/cdn-cgi/l/email-protection');m=a.length;if(a&&s>-1&&m>28){j=28+s;s='';if(j<m){r='0x'+a.substr(j,2)|0;for(j+=2;j<m&&a.charAt(j)!='X';j+=2)s+='%'+('0'+('0x'+a.substr(j,2)^r).toString(16)).slice(-2);j++;s=decodeURIComponent(s)+a.substr(j,m-j)}t.innerHTML=s.replace(/</g,'&lt;').replace(/>/g,'&gt;');l[i].href='mailto:'+t.value}}catch(e){}}}catch(e){}})(document);/* ]]> */</script></body>
 </html>");
 
-    var body = MailBody
-      .CreateBody(template)
-      .Paragraph("Please confirm your email address by clicking the link below.")
-      .Paragraph("We may need to send you critical information about our service and it is important that we have an accurate email address.")
-      .Button("https://example.com/", "Confirm Email Address")
-      .Paragraph("— [Insert company name here]")
-      .ToString();
+        var body = MailBody
+            .CreateBody(template)
+            .Paragraph("Please confirm your email address by clicking the link below.")
+            .Paragraph(
+                "We may need to send you critical information about our service and it is important that we have an accurate email address.")
+            .Button("https://example.com/", "Confirm Email Address")
+            .Paragraph("— [Insert company name here]")
+            .ToString();
 
-    return body;
-  }
+        return body;
+    }
 
-  public static string GenerateWithImages()
-  {
-    var body = MailBody
-      .CreateBody()
-      .Image("https://placehold.it/540x70/ffffff/e8117f?text=My+logo", "My company name")
-      .Paragraph("Please confirm your email address by clicking the link below.")
-      .Paragraph("We may need to send you critical information about our service and it is important that we have an accurate email address.")
-      .Button("https://example.com/", "Confirm Email Address")
-      .Paragraph("— [Insert company name here]")
-      .ToString();
+    public static string GenerateWithImages()
+    {
+        var body = MailBody
+            .CreateBody()
+            .Image("https://placehold.it/540x70/ffffff/e8117f?text=My+logo", "My company name")
+            .Paragraph("Please confirm your email address by clicking the link below.")
+            .Paragraph(
+                "We may need to send you critical information about our service and it is important that we have an accurate email address.")
+            .Button("https://example.com/", "Confirm Email Address")
+            .Paragraph("— [Insert company name here]")
+            .ToString();
 
-    return body;
-  }
+        return body;
+    }
 
-  public static MailBodyTemplate GetOnlyParagraphWithFontSizeStyleTemplate()
-  {
-    var template = MailBodyTemplate.GetDefaultTemplate()
-      .Paragraph(m =>
-      {
-        var hasFontSize = m.TryGetAttribute("fontSize", out string fontSize);
-        return $"<p{(hasFontSize ? $" style='font-size: {fontSize};'" : "")}>{m.Content}</p>";
-      })
-      .Body(m => m.Content);
+    public static MailBodyTemplate GetOnlyParagraphWithFontSizeStyleTemplate()
+    {
+        var template = MailBodyTemplate.GetDefaultTemplate()
+            .Paragraph(m =>
+            {
+                var hasFontSize = m.TryGetAttribute("fontSize", out string fontSize);
+                return $"<p{(hasFontSize ? $" style='font-size: {fontSize};'" : "")}>{m.Content}</p>";
+            })
+            .Body(m => m.Content);
 
-    return template;
-  }
+        return template;
+    }
 }

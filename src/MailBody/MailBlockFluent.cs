@@ -194,10 +194,7 @@ public class MailBlockFluent
     /// <returns></returns>
     public MailBlockFluent Raw(string html)
     {
-        _commands.Add(() =>
-        {
-            return html;
-        });
+        _commands.Add(() => { return html; });
         return this;
     }
 
@@ -231,10 +228,12 @@ public class MailBlockFluent
             var builder = new StringBuilder();
             foreach (var item in items)
             {
-                var itemElement = new ContentElement { Content = MailBody.HtmlEncode(item.ToString()), Attributes = attributes };
+                var itemElement = new ContentElement
+                    {Content = MailBody.HtmlEncode(item.ToString()), Attributes = attributes};
                 builder.Append(_template.ListItem()(itemElement));
             }
-            var element = new ContentElement { Content = builder.ToString(), Attributes = attributes };
+
+            var element = new ContentElement {Content = builder.ToString(), Attributes = attributes};
             return _template.UnorderedList()(element);
         });
         return this;
@@ -252,10 +251,12 @@ public class MailBlockFluent
             var builder = new StringBuilder();
             foreach (var item in items)
             {
-                var itemElement = new ContentElement { Content = MailBody.HtmlEncode(item.ToString()), Attributes = attributes };
+                var itemElement = new ContentElement
+                    {Content = MailBody.HtmlEncode(item.ToString()), Attributes = attributes};
                 builder.Append(_template.ListItem()(itemElement));
             }
-            var element = new ContentElement { Content = builder.ToString(), Attributes = attributes };
+
+            var element = new ContentElement {Content = builder.ToString(), Attributes = attributes};
             return _template.OrderedList()(element);
         });
         return this;
@@ -278,6 +279,7 @@ public class MailBlockFluent
 
                 builder.Append(item.ToString());
             }
+
             return builder.ToString();
         });
         return this;
@@ -288,7 +290,7 @@ public class MailBlockFluent
     /// </summary>
     /// <returns></returns>
     public override string ToString() => GenerateHtml();
-        
+
     /// <summary>
     /// Generate the html
     /// </summary>

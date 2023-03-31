@@ -19,7 +19,7 @@ public class ContentElement
 
         if (property != null)
         {
-            val = (T)property.GetValue(Attributes, null);
+            val = (T) property.GetValue(Attributes, null);
             return true;
         }
 
@@ -27,11 +27,11 @@ public class ContentElement
 
         if (isDict)
         {
-            var dictionary = (IDictionary)Attributes;
-                
+            var dictionary = (IDictionary) Attributes;
+
             if (dictionary.Contains(attr))
             {
-                val = (T)dictionary[attr];
+                val = (T) dictionary[attr];
                 return true;
             }
         }

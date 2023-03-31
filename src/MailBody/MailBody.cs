@@ -68,6 +68,7 @@ public class MailBody
                     break;
             }
         }
+
         return builder.ToString();
     }
 
@@ -100,6 +101,7 @@ public class MailBody
                     break;
             }
         }
+
         return builder.ToString();
     }
 }
