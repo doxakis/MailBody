@@ -75,117 +75,140 @@ namespace Tests
             public string FontSize { get; set; }
         }
 
-        [Fact]
-        public void ElementHasAttributeFromAnonymousObject()
+        [Theory]
+        [InlineData("fontSize", true)]
+        [InlineData("color", false)]
+        public void HasAttribute_AndAnonymousObject_AndVaryPropertyName(string propertyName, bool expected)
         {
             var element = new ContentElement
             {
-                Content = "<p>test</p>",
                 Attributes = new { fontSize = "12px" }
             };
 
-            Assert.True(element.HasAttribute("fontSize"));
-            Assert.False(element.HasAttribute("color"));
+            var actual = element.HasAttribute(propertyName);
+
+            Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void ElementHasAttributeFromDictionary()
+        [Theory]
+        [InlineData("fontSize", true)]
+        [InlineData("color", false)]
+        public void HasAttribute_AndDictionary_AndVaryPropertyName(string propertyName, bool expected)
         {
             var element = new ContentElement
             {
-                Content = "<p>test</p>",
-                Attributes = new Dictionary<string, string>() { ["fontSize"] = "12px" }
+                Attributes = new Dictionary<string, string> { ["fontSize"] = "12px" }
             };
 
-            Assert.True(element.HasAttribute("fontSize"));
-            Assert.False(element.HasAttribute("color"));
+            var actual = element.HasAttribute(propertyName);
+
+            Assert.Equal(expected, actual);
         }
 
-        [Fact]
-        public void ElementHasAttributeFromClass()
+        [Theory]
+        [InlineData("FontSize", true)]
+        [InlineData("color", false)]
+        public void HasAttribute_AndClass_AndVaryPropertyName(string propertyName, bool expected)
         {
             var element = new ContentElement
             {
-                Content = "<p>test</p>",
                 Attributes = new CssAttributes { FontSize = "12px" }
             };
 
-            Assert.True(element.HasAttribute("FontSize"));
-            Assert.False(element.HasAttribute("color"));
+            var actual = element.HasAttribute(propertyName);
+
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
-        public void ElementTryGetAttributeFromAnonymousObject()
+        public void TryGetAttribute_AndAnonymousObject_AndPropertyExists()
         {
             var element = new ContentElement
             {
-                Content = "<p>test</p>",
                 Attributes = new { fontSize = "12px" }
             };
 
-            string size = null;
-            bool sizeExist = element.TryGetAttribute("fontSize", out size);
+            var actual = element.TryGetAttribute("fontSize", out string size);
 
-            Assert.True(sizeExist);
+            Assert.True(actual);
             Assert.Equal("12px", size);
+        }
 
-            string color = null;
-            bool colorExist = element.TryGetAttribute("color", out size);
+        [Fact]
+        public void TryGetAttribute_AndAnonymousObject_AndPropertyIsMissing()
+        {
+            var element = new ContentElement
+            {
+                Attributes = new { fontSize = "12px" }
+            };
 
-            Assert.False(colorExist);
+            var actual = element.TryGetAttribute("color", out string color);
+
+            Assert.False(actual);
             Assert.Null(color);
         }
 
         [Fact]
-        public void ElementTryGetAttributeFromDictionary()
+        public void TryGetAttribute_AndDictionary_AndPropertyExists()
         {
             var element = new ContentElement
             {
-                Content = "<p>test</p>",
-                Attributes = new Dictionary<string, string>() { ["fontSize"] = "12px" }
+                Attributes = new Dictionary<string, string> { ["fontSize"] = "12px" }
             };
 
-            string size = null;
-            bool sizeExist = element.TryGetAttribute("fontSize", out size);
+            var actual = element.TryGetAttribute("fontSize", out string size);
 
-            Assert.True(sizeExist);
+            Assert.True(actual);
             Assert.Equal("12px", size);
+        }
 
-            string color = null;
-            bool colorExist = element.TryGetAttribute("color", out size);
+        [Fact]
+        public void TryGetAttribute_AndDictionary_AndPropertyIsMissing()
+        {
+            var element = new ContentElement
+            {
+                Attributes = new Dictionary<string, string> { ["fontSize"] = "12px" }
+            };
 
-            Assert.False(colorExist);
+            var actual = element.TryGetAttribute("color", out string color);
+
+            Assert.False(actual);
             Assert.Null(color);
         }
 
         [Fact]
-        public void ElementTryGetAttributeFromClass()
+        public void TryGetAttribute_AndClass_AndPropertyExists()
         {
             var element = new ContentElement
             {
-                Content = "<p>test</p>",
                 Attributes = new CssAttributes { FontSize = "12px" }
             };
 
-            string size = null;
-            bool sizeExist = element.TryGetAttribute("FontSize", out size);
+            var actual = element.TryGetAttribute("FontSize", out string size);
 
-            Assert.True(sizeExist);
+            Assert.True(actual);
             Assert.Equal("12px", size);
+        }
 
-            string color = null;
-            bool colorExist = element.TryGetAttribute("color", out size);
+        [Fact]
+        public void TryGetAttribute_AndClass_AndPropertyIsMissing()
+        {
+            var element = new ContentElement
+            {
+                Attributes = new CssAttributes { FontSize = "12px" }
+            };
 
-            Assert.False(colorExist);
+            var actual = element.TryGetAttribute("color", out string color);
+
+            Assert.False(actual);
             Assert.Null(color);
         }
 
         [Fact]
         public void DifferentAssemblyDynamicAttributesTest()
         {
-            string text = "test";
-            string size = "12px";
-
+            const string text = "test";
+            const string size = "12px";
             var template = Example.Program.GetOnlyParagraphWithFontSizeStyleTemplate();
 
             var html = MailBody

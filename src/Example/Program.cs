@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using MailBodyPack;
 using System.IO;
 
@@ -674,8 +672,7 @@ namespace Example
             var template = MailBodyTemplate.GetDefaultTemplate()
                 .Paragraph(m =>
                 {
-                    string fontSize = null;
-                    var hasFontSize = m.TryGetAttribute<string>("fontSize", out fontSize);
+                    var hasFontSize = m.TryGetAttribute("fontSize", out string fontSize);
                     return $"<p{(hasFontSize ? $" style='font-size: {fontSize};'" : "")}>{m.Content}</p>";
                 })
                 .Body(m => m.Content);
