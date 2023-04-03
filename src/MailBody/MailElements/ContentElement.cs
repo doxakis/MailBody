@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 
 namespace MailBodyPack;
 
@@ -40,4 +41,12 @@ public class ContentElement
     }
 
     public bool HasAttribute(string attr) => TryGetAttribute(attr, out object T) && T is not null;
+
+    public string GetAttribute(string attr)
+    {
+        if (TryGetAttribute(attr, out object value))
+            return value.ToString();
+
+        throw new ArgumentException("Attribute not found");
+    }
 }
