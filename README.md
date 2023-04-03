@@ -150,17 +150,15 @@ var body = MailBody
 ```
 var template = MailBodyTemplate.GetDefaultTemplate();
 template
-    .Paragraph(m =>
-        "<p style='" +
-        (m.IsProperty(() => m.Attributes.color) ? $"color:{m.Attributes.color};" : string.Empty) +
-        (m.IsProperty(() => m.Attributes.backgroundColor) ? $"background-color:{m.Attributes.backgroundColor};" : string.Empty) +
+    .Paragraph(m => "<p style='" +
+        (m.TryGetAttribute("color", out string color) ? $"color:{color};" : string.Empty) +
+        (m.TryGetAttribute("backgroundColor", out string backgroundColor) ? $"background-color:{backgroundColor};" : string.Empty) +
         $"'>{m.Content}</p>")
     .Body(m => "<html><body>" + m.Content + "<br />" + m.Footer + "</body></html>")
     .Text(m =>
-        $"<span style='" +
-        (m.IsProperty(() => m.Attributes.color) ? $"color:{m.Attributes.color};" : string.Empty) +
-        (m.IsProperty(() => m.Attributes.backgroundColor) ? $"background-color:{m.Attributes.backgroundColor};" : string.Empty) +
-        (m.IsProperty(() => m.Attributes.fontWeight) ? $"font-weight:{m.Attributes.fontWeight};" : string.Empty) +
+        "<span style='" + (m.HasAttribute("color") ? $"color:{m.GetAttribute("color")};" : string.Empty) +
+        (m.HasAttribute("backgroundColor") ? $"background-color:{m.GetAttribute("backgroundColor")};" : string.Empty) +
+        (m.HasAttribute("fontWeight") ? $"font-weight:{m.GetAttribute("fontWeight")};" : string.Empty) +
         $"'>{m.Content}</span>");
 
 var footer = MailBody
