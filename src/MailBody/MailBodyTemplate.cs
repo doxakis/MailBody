@@ -137,7 +137,7 @@ public class MailBodyTemplate
             .UnorderedList(m => $"<ul>{m.Content}</ul>")
             .OrderedList(m => $"<ol>{m.Content}</ol>")
             .ListItem(m => $"<li>{m.Content}</li>")
-            .LineBreak(m => $"</br>")
+            .LineBreak(m => $"<br>")
             .Button(m =>
                 @"<table border='0' cellpadding='0' cellspacing='0' class='btn btn-primary' style='border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%; box-sizing: border-box;' width='100%'>
     <tbody>
